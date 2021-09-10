@@ -38,7 +38,6 @@ const [expanded, setExpanded] = useState("")
         <Navbar expand="lg" className="p-1" expanded={expanded}>
             <Navbar.Brand as={Link} to="/" className="menu_color"><Logo/></Navbar.Brand>
             <Navbar.Brand as={Link} to="/auth" className="menu-color">
-                <span className="ml-3" style={{fontSize:'1.8rem'}}>Support Center</span>
             </Navbar.Brand>
         </Navbar>
       </Container>
