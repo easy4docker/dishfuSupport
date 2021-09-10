@@ -10,8 +10,6 @@ function Footer() {
           &copy; {Year} Dishfu &nbsp;
           &nbsp;<Link to="/privacy">Privacy</Link>
           &nbsp;|&nbsp;<Link to="/terms">Term</Link>
-          
-          &nbsp;|&nbsp;<Link to="/setting">setting</Link>
         </div>
         <div className="clearfix p-0 m-0"></div>
     </Container>

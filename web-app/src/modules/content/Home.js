@@ -43,23 +43,6 @@ function Home(props) {
             marginBottom: '0px',
             minHeight:'1024px',
             textAlign: 'center'}}>
-          
-          <Container className="text-left pt-3"><h3>Weekly Promotion:</h3></Container>
-          <Container className="text-left p-0">
-            {items.map((record, k)=> {
-                return (<div key={k} className="float-left p-2 m-0 text-center">
-                    <IPFSImg ipfs={record.ipfs} isCache={true} 
-                    className=""
-                    style={{width:'200px', height:'200px', minHeight:'180px', objectFit: 'cover'}}
-                    />
-                    <div>{record.name}
-                      <br/>
-                      <StarRating value={record.rating} readOnly="true"/>
-                    </div>
-
-                </div>)})}
-              <div className="clearfix p-0 m-0"></div>
-            </Container>
         </Container>
       </div>
       </Container>

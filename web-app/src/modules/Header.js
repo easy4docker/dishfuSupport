@@ -3,7 +3,6 @@ import React, {useEffect, useState} from 'react';
 import { Nav, /* NavDropdown, */ Navbar, Container, Badge } from 'react-bootstrap';
 import { Link, useLocation  } from "react-router-dom";
 import { RoleSection } from './common';
-import { ShoppingCnt }  from './shoppingCart';
 import { AuthHeadItem  }  from './mobileAuth';
 import { Logo } from './common';
 
@@ -15,8 +14,7 @@ const [expanded, setExpanded] = useState("")
     focus:  {caption: 'Community', role: ['foodie', 'supie'], linkTo: '/community'},
     menus: {caption: 'Menu', role: ['all'], linkTo: '/menus'},
     foodie: {caption: 'Become a foodie', role: ['all'], linkTo: '/becomeFoodie', exrole: ['foodie']},
-    supie: {caption: 'Become a supie', role: ['all'], linkTo: '/becomeSupie', exrole: ['supie']},
-    orders:  {caption: (<ShoppingCnt/>), role: ['all'], linkTo: '/orders'},
+    supie: {caption: 'Become a supie', role: ['all'], linkTo: '/becomeSupie', exrole: ['supie']}
   };
   const SelectedClass = (v)=> {
     const location = useLocation(); 
@@ -39,19 +37,13 @@ const [expanded, setExpanded] = useState("")
       <Container>
         <Navbar expand="lg" className="p-1" expanded={expanded}>
             <Navbar.Brand as={Link} to="/" className="menu_color"><Logo/></Navbar.Brand>
-            <Navbar.Brand as={Link} to="/auth" className="menu_color">
-                <AuthHeadItem />
+            <Navbar.Brand as={Link} to="/auth" className="menu-color">
+                <span style={{fontSize:'1.8rem'}}>Support Center</span>
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" onClick={() => setExpanded(expanded ? false : "expanded")} />
             <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-                
-                {getNavLink('menus')}
-                {getNavLink('foodie')}
-                {getNavLink('supie')}
-                {getNavLink('design')}
-                {getNavLink('focus')}
-                {getNavLink('orders')}
+
                 
             </Nav>
             </Navbar.Collapse>
