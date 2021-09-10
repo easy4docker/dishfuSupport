@@ -33,7 +33,7 @@ const [expanded, setExpanded] = useState("")
   }, []);
 
   return (
-    <Container className="bg-primary" fluid={true}>
+    <Container className="bg-info" fluid={true}>
       <Container>
         <Navbar expand="lg" className="p-1" expanded={expanded}>
             <Navbar.Brand as={Link} to="/" className="menu_color"><Logo/></Navbar.Brand>
