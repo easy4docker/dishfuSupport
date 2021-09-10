@@ -5,7 +5,7 @@ import { faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons';
 import { AddressInput, Engine } from '../common';
 import { SettingStore } from '../../stores';
 
-function ApplicationsList(props) {
+function TransList(props) {
   const engine = new Engine();
   const [address, setAddress] = useState('');
   const [qualification, setQualification] = useState('');
@@ -111,4 +111,4 @@ function ApplicationsList(props) {
    return (!success) ? inputForm() : successForm()
 }
 
-export { ApplicationsList }
+export { TransList }

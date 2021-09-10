@@ -1,3 +1,3 @@
-import { UsersList } from './reportDetails';
-import { ApplicationsList } from './applicationsList';
-export { ApplicationsList, UsersList }
+import { TransDetails } from './transDetails';
+import { TransList } from './transList';
+export { TransList, TransDetails }

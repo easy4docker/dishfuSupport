@@ -7,7 +7,7 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { AddressInput, Engine } from '../common';
 import { SettingStore } from '../../stores';
 
-function UsersList(props) {
+function TransDetails (props) {
   const engine = new Engine();
   const [address, setAddress] = useState('');
   const [description, setDescription] = useState('');
@@ -97,4 +97,4 @@ function UsersList(props) {
    return (!success) ? inputForm() : successForm();
 }
 
-export { UsersList }
+export { TransDetails }
