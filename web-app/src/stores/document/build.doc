@@ -1,0 +1,9 @@
+Part A-- NPM project creation
+
+...
+
+Part B-- Build
+npm i autoprefixer
+npm run build
+
+Part C-- deployment
