@@ -1,3 +1,3 @@
-import { TransDetails } from './transDetails';
-import { TransList } from './transList';
-export { TransList, TransDetails }
+import { TransSocketSync } from './trsnsSocketSync';
+import { TransDocument } from './transDocument';
+export { TransDocument , TransSocketSync }

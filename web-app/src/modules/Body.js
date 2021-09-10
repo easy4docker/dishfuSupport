@@ -4,7 +4,7 @@ import { Container } from 'react-bootstrap';
 
 import { Home } from "./content";
 import { ApplicationsList, UsersList } from "./authUsersAdmin";
-import { TransList, TransDetails } from "./transReport";
+import { TransDocument } from "./transReport";
 
 function Body(props) {
   useEffect(() => {
@@ -23,10 +23,7 @@ function Body(props) {
             <UsersList/>
           </Route>
           <Route  exact path="/transReport">
-            <TransList/>
-          </Route>
-          <Route  exact path="/transReport/tid">
-            <TransDetails/>
+            <TransDocument/>
           </Route>
         </Switch>
     </Container>
