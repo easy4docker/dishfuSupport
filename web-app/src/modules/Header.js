@@ -11,7 +11,7 @@ const [expanded, setExpanded] = useState("")
 
   const navItem = {
     authUsers:  {caption: 'User Admin', role: ['all'], linkTo: '/authUsers'},
-    transTracking:  {caption: 'Transaction Tracking', role: ['all'], linkTo: '/transTracking'}
+    transTracking:  {caption: 'Transaction Report', role: ['all'], linkTo: '/transReport'}
   };
   const SelectedClass = (v)=> {
     const location = useLocation(); 

@@ -7,7 +7,7 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { AddressInput, Engine } from '../common';
 import { SettingStore } from '../../stores';
 
-function BecomeFoodie(props) {
+function UsersList(props) {
   const engine = new Engine();
   const [address, setAddress] = useState('');
   const [description, setDescription] = useState('');
@@ -97,4 +97,4 @@ function BecomeFoodie(props) {
    return (!success) ? inputForm() : successForm();
 }
 
-export { BecomeFoodie }
+export { UsersList }

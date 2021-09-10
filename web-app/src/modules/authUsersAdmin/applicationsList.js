@@ -5,7 +5,7 @@ import { faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons';
 import { AddressInput, Engine } from '../common';
 import { SettingStore } from '../../stores';
 
-function BecomeSupie(props) {
+function ApplicationsList(props) {
   const engine = new Engine();
   const [address, setAddress] = useState('');
   const [qualification, setQualification] = useState('');
@@ -111,4 +111,4 @@ function BecomeSupie(props) {
    return (!success) ? inputForm() : successForm()
 }
 
-export { BecomeSupie }
+export { ApplicationsList }

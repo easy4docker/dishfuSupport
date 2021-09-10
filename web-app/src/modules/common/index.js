@@ -2,8 +2,6 @@ import DisplayRecipe from './DisplayRecipe';
 import IpfsDoc from './IpfsDoc';
 
 import Cache  from './Cache';
-
-import StarRating from './StarRating';
 import Messagebox from './Messagebox';
 import RoleSection from './RoleSection';
 import { Loading } from './Loading';
@@ -19,6 +17,6 @@ export {
     InfoHeader, Logo, IPFSImg, 
     FingerPrinter, IpfsDoc, DisplayRecipe,
     Engine, IPFSEngine, Loading,
-    Cache,  StarRating, Messagebox, RoleSection, AddressInput
+    Cache,  Messagebox, RoleSection, AddressInput
     
 }
