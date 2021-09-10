@@ -1,4 +1,4 @@
-import { SettingStore, DataStore } from '../../stores';
+import { SettingStore } from '../../stores';
 
 class Engine {
     constructor(prop) {
@@ -36,30 +36,7 @@ class Engine {
         });
     }
 
-    saveLocalRecord = (dt, callback)=>{
-        const me = this;
-        me.loadingOn();
-        setTimeout(()=>{
-            DataStore.dispatch(dt);
-            setTimeout(()=> {
-                callback(DataStore.getState().data);
-                me.loadingOff();
-            }, 100)
-            
-        }, 3000)
-     }
-     saveLocalRecord = (dt, callback)=>{
-        const me = this;
-        me.loadingOn();
-        setTimeout(()=>{
-            DataStore.dispatch(dt);
-            setTimeout(()=> {
-                callback(DataStore.getState().data);
-                me.loadingOff();
-            }, 100)
-            
-        }, 3000)
-     }
+
      DatabaseApi = (apiCode, dt, callback)=>{
         const me = this;
         fetch(me.server + '/api/' + apiCode, {
@@ -76,30 +53,6 @@ class Engine {
         });
      }
 
-    loadStorageData = (cfg, callback)=>{
-        const me = this;
-        this.loadingOn();
-        let data0 = this.defaultData;
-        try {
-            data0 =  (!localStorage.getItem('localData')) ? this.defaultData : JSON.parse(localStorage.getItem('localData'));
-        } catch (e) {}
-
-        DataStore.dispatch({
-            type: 'loadLocal',
-            data : data0
-        });
-        me.loadingOff();
-        callback();
-        return true;
-    }
-
-    getStorageData = (cfg, callback)=>{
-        const me = this;
-        const data = DataStore.getState();
-        me.loadingOff();
-        callback(data.data);
-        return true;
-    }
 }
 
 export default Engine;

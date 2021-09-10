@@ -10,11 +10,8 @@ function Header(props) {
 const [expanded, setExpanded] = useState("")
 
   const navItem = {
-    design:  {caption: 'Workshop', role: ['foodie', 'supie'], linkTo: '/workshop'},
-    focus:  {caption: 'Community', role: ['foodie', 'supie'], linkTo: '/community'},
-    menus: {caption: 'Menu', role: ['all'], linkTo: '/menus'},
-    foodie: {caption: 'Become a foodie', role: ['all'], linkTo: '/becomeFoodie', exrole: ['foodie']},
-    supie: {caption: 'Become a supie', role: ['all'], linkTo: '/becomeSupie', exrole: ['supie']}
+    authUsers:  {caption: 'User Admin', role: ['all'], linkTo: '/authUsers'},
+    transTracking:  {caption: 'Transaction Tracking', role: ['all'], linkTo: '/transTracking'}
   };
   const SelectedClass = (v)=> {
     const location = useLocation(); 
@@ -39,6 +36,12 @@ const [expanded, setExpanded] = useState("")
             <Navbar.Brand as={Link} to="/" className="menu_color"><Logo/></Navbar.Brand>
             <Navbar.Brand as={Link} to="/auth" className="menu-color">
             </Navbar.Brand>
+            <Navbar.Collapse id="basic-navbar-nav">
+              <Nav className="me-auto">
+                {getNavLink('authUsers')}
+                {getNavLink('transTracking')}
+              </Nav>
+            </Navbar.Collapse>
         </Navbar>
       </Container>
     </Container>
