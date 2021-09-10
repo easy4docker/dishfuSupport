@@ -4,7 +4,6 @@ import  Header  from './modules/Header';
 import  Footer  from './modules/Footer';
 import  Body from './modules/Body';
 import { Spinner } from 'react-bootstrap';
-import { MobileAuth, InfoCatch, ScanSignin } from './modules/mobileAuth'
 import './App.css';
 import { useMediaQuery } from 'react-responsive';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -59,15 +58,6 @@ const App = (props) => {
   const pageReady = (
       <Router className="p-0 m-0">
         <Switch>
-          <Route exact path="/MobileAuth/:SocketID">
-            <MobileAuth/>
-          </Route>
-          <Route exact path="/ScanSignin/:RequestID">
-            <ScanSignin/>
-          </Route>
-          <Route exact path="/InfoCatch/:InfoCode">
-            <InfoCatch/>
-          </Route>
           <Route>
             <Header/>
             <Loading/>
