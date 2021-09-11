@@ -9,6 +9,7 @@ import socketClient  from 'socket.io-client';
 
 function SignInForm (props) {
    const SOCKET_URL = SettingStore.getState().config.sockerServer;
+   const WEBSERVER_URL = SettingStore.getState().config.webServer;
    const engine = new Engine();
    const [phone, setPhone] = useState('');
    const [validPhone, setValidPhone] = useState(false);
@@ -72,7 +73,7 @@ function SignInForm (props) {
    }
 
    const createQR = (sockedId) => {
-      QRCode.toDataURL(SOCKET_URL + '/AdminAuth/' + sockedId,
+      QRCode.toDataURL(WEBSERVER_URL + '/AdminAuth/' + sockedId,
           { 
               width:338,
               type: 'image/png',
@@ -128,7 +129,7 @@ function SignInForm (props) {
          <li>Last step, to use the phone scan this QR code. The computer client with grant an admin permission.</li>
          </ol>
          <Container fluid={true}>
-            {SettingStore.getState().config.webServer + '/AdminAuth/' + sockedId}
+            {WEBSERVER_URL + '/AdminAuth/' + sockedId}
             <br/>
             <Image src={qr} className="border border-primary"/>
          </Container>
