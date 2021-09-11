@@ -5,7 +5,6 @@ import { Container } from 'react-bootstrap';
 import { Home } from "./content";
 import { ApplicationsList, UsersList } from "./authUsersAdmin";
 import { TransDocument } from "./transReport";
-import { SignInForm } from '../modules/mobileAuth';
 
 function Body(props) {
   useEffect(() => {
@@ -13,7 +12,6 @@ function Body(props) {
 
   return (
     <Container fluid={true} className="m-0 p-0">
-        <SignInForm/> 
         <Switch>
           <Route  exact path="/">
             <Home/>

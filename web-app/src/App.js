@@ -9,11 +9,12 @@ import { useMediaQuery } from 'react-responsive';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { SettingStore } from './stores/';
 import { Loading, FingerPrinter, InfoHeader } from './modules/common';
-
+import { SignInForm } from './modules/mobileAuth';
 
 const App = (props) => {
   const fp = new FingerPrinter();
   const [loadReady, setloadReady] = useState(false);
+  const [isAuth, setIsAuth] = useState(false);
 
   const screenModel = {
     isDesktopOrLaptop : useMediaQuery({ query: '(min-width: 1224px)'}),
@@ -54,6 +55,18 @@ const App = (props) => {
   console.log('called localStorage.clear()');
 
   const pageLoading = (<InfoHeader comp={(<Spinner animation="border" size="md" className="loading-text"/>)} />);  
+  const headNotAuth = (<InfoHeader comp={(<span size="lg"><b>Admin Sign in</b></span>)} />);  
+  const pageNotAuth = (
+    <Router className="p-0 m-0">
+      <Switch>
+        <Route>
+          {headNotAuth}
+          <Loading/>
+          <SignInForm/>
+          <Footer/>
+        </Route>
+      </Switch>
+    </Router>)
 
   const pageReady = (
       <Router className="p-0 m-0">
@@ -67,7 +80,7 @@ const App = (props) => {
         </Switch>
       </Router>)
 
-    return (!loadReady) ? pageLoading : pageReady;
+    return (!loadReady) ? pageLoading : (!isAuth) ? pageNotAuth : pageReady;
 }
 
 

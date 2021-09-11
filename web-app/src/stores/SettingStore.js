@@ -5,7 +5,7 @@ import  FingerprintJS  from '@fingerprintjs/fingerprintjs'
 console.log('window.location.hostname-->', window.location.hostname);
 const _defaultSetting = {ready: false, loading: {}, screenModel:{}, _watcher:'',
       fp : '',
-      data : {token:''},
+      data : {token:'', isAuth: false},
       config: {
         apiServer     : 'http://192.168.86.126:3001',
         webServer     : 'http://192.168.86.126:3000',
@@ -21,9 +21,7 @@ const reducer = (state = _defaultSetting, action) => {
       state.data.token = action.token;
       state._watcher = 'auth';
       saveSettingApi(state.data);
-      console.log('===state.data===>', state.data);
       return state;
-
 
     /* --- None api action  --> */
     case 'loadScreenModel':
