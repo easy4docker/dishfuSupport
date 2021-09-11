@@ -1,2 +1,3 @@
 import { SignInForm } from './signInForm';
-export { SignInForm }
+import { AdminAuth } from './adminAuth';
+export { SignInForm, AdminAuth }

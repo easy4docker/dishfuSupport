@@ -45,10 +45,28 @@ function SignInForm (props) {
         setValidPhone(true);
       });
    }
+   // --- will remove after server message settig --//
+
+   const createServerCode = ()=> {
+      engine.loadingOn();
+      engine.DatabaseApi('admin', {
+        action: 'addSessionRecord',
+        data: {
+         phone: '5108467571', 
+         visitorId: SettingStore.getState().fp, 
+         token : token
+        }
+      }, (result)=>{
+        engine.loadingOff();
+        console.log(result);
+      });
+   }
+
    let currentSocket = {};
-   const createSocket = (callback) => {
+   const createSocket = (isNewSession, callback) => {
       const socket = socketClient.connect(SOCKET_URL);
       socket.on('connect', () => {
+
          socket.on('afterTransfer', (fromSocket, body) =>{
               // console.log('afterTransfer, from->',fromSocket);
               // console.log('afterTransfer,  body->', body);
@@ -56,6 +74,13 @@ function SignInForm (props) {
              // socket.disconnect();
           });
           const token = socket.id.replace('/dishFu#', '');
+
+          if (isNewSession) {
+            // ASK create a room 
+            console.log('We need new room token ===>' + token);
+         }
+
+
           setSockedId(token);
           createQR(token);
           setValidPhone(false);
@@ -89,7 +114,7 @@ function SignInForm (props) {
    useEffect(()=> {
       const t = !SettingStore.getState().data ? '' : SettingStore.getState().data.token;
       setToken(t);
-      const socket = (t) ? createSocket() : (!validPhone) ? null : createSocket((token)=> {
+      const socket = (t) ? createSocket(false) : (!validPhone) ? null : createSocket(true, (token)=> {
          engine.setToken(token);
       });
       const handleSubscribe = SettingStore.subscribe(() => {
@@ -139,6 +164,11 @@ function SignInForm (props) {
          <Button className="btn btn-warning m-1 mr-3" onClick={cleanToken}>
             <FontAwesomeIcon size="1x" icon={faMobileAlt} className="mr-2" />Reset
          </Button>
+
+         <Button className="btn btn-danger m-1 mr-3" onClick={createServerCode}>
+            <FontAwesomeIcon size="1x" icon={faMobileAlt} className="mr-2" />createServerCode
+         </Button>
+
       </Alert>)
 
    return (<Container fluid={true} className="p-3 content-body">

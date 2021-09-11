@@ -9,7 +9,8 @@ import { useMediaQuery } from 'react-responsive';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { SettingStore } from './stores/';
 import { Loading, FingerPrinter, InfoHeader } from './modules/common';
-import { SignInForm } from './modules/mobileAuth';
+import { SignInForm, AdminAuth } from './modules/mobileAuth';
+
 
 const App = (props) => {
   const fp = new FingerPrinter();
@@ -60,7 +61,7 @@ const App = (props) => {
       <Router className="p-0 m-0">
         <Switch>
           <Route exact path="/AdminAuth/:SocketID">
-            ADMINAuth
+            <AdminAuth/>
           </Route>
           <Route>
             {(!!isAuth) ? (<Header/>) : headNotAuth}
