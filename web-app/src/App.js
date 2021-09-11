@@ -71,6 +71,9 @@ const App = (props) => {
   const pageReady = (
       <Router className="p-0 m-0">
         <Switch>
+          <Route exact path="/AdminAuth/:SocketID">
+            ADMINAuth
+          </Route>
           <Route>
             <Header/>
             <Loading/>
