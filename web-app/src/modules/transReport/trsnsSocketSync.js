@@ -7,8 +7,9 @@ function TransSocketSync (props) {
   const [qr, setQr] = useState('');
   const [sockedId, setSockedId] =  useState('');
   const [url, setUrl] =  useState('');
+  
   useEffect(()=> {
-    setSockedId(new Date().getTime());
+    console.log('SettingStore==>>>>', SettingStore.getState().data);
   }, [])
   useEffect(()=> {
     if (sockedId) {
@@ -29,10 +30,7 @@ function TransSocketSync (props) {
     }
 }, [sockedId]);
   return  (<Container className="content-body mt-3">
-   <h4>Scan it with an authrized phone.</h4><br/>
-    {url}
-    <hr/>
-   <Image src={qr} className="border border-primary"/>
+   Nothing
   </Container>);
 }
 export {TransSocketSync  }

@@ -29,10 +29,10 @@ class Engine {
           });;
     }
 
-    setOperationRole = (role)=>{
+    setToken = (token)=>{
         SettingStore.dispatch({
-            type: 'updateOperationRole',
-            operationRole: role
+            type: 'updateToken',
+            token: token
         });
     }
 

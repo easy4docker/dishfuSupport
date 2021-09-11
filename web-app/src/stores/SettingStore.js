@@ -4,12 +4,8 @@ import  FingerprintJS  from '@fingerprintjs/fingerprintjs'
 
 console.log('window.location.hostname-->', window.location.hostname);
 const _defaultSetting = {ready: false, loading: {}, screenModel:{}, _watcher:'',
-      fp : '1234',
-      data : {roles:[], operationRole:'', screenModel:{}, auth:false, AuthInfo: {}},
-      allRoles : [
-        {id:1, code:'foodie', desc:'Foodie', description:'Foodie'},
-        {id:2, code:'supie', desc: 'Food supplier', description:'Food supplier / Restaurent / Grocery'}
-      ],
+      fp : '',
+      data : {token:''},
       config: {
         apiServer     : 'http://192.168.86.126:3001',
         webServer     : 'http://192.168.86.126:3000',
@@ -21,34 +17,13 @@ const _defaultSetting = {ready: false, loading: {}, screenModel:{}, _watcher:'',
 const reducer = (state = _defaultSetting, action) => {
   state._watcher = '';
   switch(action.type) {
-    /* --- Api action --> */
-    case 'saveRoles':
-      state.data.roles = action.roles;
-      state._watcher = 'role';
-      saveSettingApi(state.data);
-      return state;
-
-    case 'saveUserInfo':
-      state.data.userInfo = action.userInfo;
-      
-      saveSettingApi(state.data);
-      return state;
-
-    case 'saveAuthInfo':
-      state.data.authInfo = {...action.data};
-      delete state.data.authInfo.auth;
-      state.data.auth = action.data.auth;
-      state.data.roles = (!action.data || !action.data.roles) ? [] : action.data.roles;
+    case 'updateToken':
+      state.data.token = action.token;
       state._watcher = 'auth';
       saveSettingApi(state.data);
+      console.log('===state.data===>', state.data);
       return state;
 
-
-    case 'updateOperationRole':
-      state._watcher = 'role';
-      state.data.operationRole = action.operationRole;
-      saveSettingApi(state.data);
-      return state;
 
     /* --- None api action  --> */
     case 'loadScreenModel':
