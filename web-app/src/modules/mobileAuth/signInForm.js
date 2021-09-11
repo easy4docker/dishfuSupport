@@ -15,6 +15,8 @@ function SignInForm (props) {
    const [qr, setQr] =  useState('');
    const [sockedId, setSockedId] =  useState('');
    const patt = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+
+   const [token, setToken] = useState(SettingStore.getState().data.token);
    
    const onPhoneChanged = (e)=>{
       if (patt.test(e.target.value)) {
@@ -40,39 +42,44 @@ function SignInForm (props) {
         setValidPhone(true);
       });
    }
-   const setToken = (token) =>{
+   const createSocket = (callback) => {
+      const socket = socketClient.connect(SOCKET_URL);
+      socket.on('connect', () => {
+         console.log('valid phone=>>>=>' + SOCKET_URL, socket.id);
+         socket.on('afterTransfer', (fromSocket, body) =>{
+              // console.log('afterTransfer, from->',fromSocket);
+              // console.log('afterTransfer,  body->', body);
+             // saveAuthInfo(body);
+             // socket.disconnect();
+          });
+          const token = socket.id.replace('/dishFu#', '');
+          setSockedId(token);
+          if (callback) callback(token)
+          // engine.setToken(token);
 
+      });
+      socket.on('disconnect', () => {
+          
+      });
+      return ()=> {
+          socket.disconnect();
+      }
    }
+
    useEffect(()=> {
-      console.log('SettingStore==>>>>', SettingStore.getState().data);
+      const t = !SettingStore.getState().data ? '' : SettingStore.getState().data.token;
+      if (t) {
+         setToken(t);
+         createSocket();
+      }
     }, [])
 
     useEffect(()=> {
        if (validPhone) {
-         
-         const socket = socketClient.connect(SOCKET_URL);
-         socket.on('connect', () => {
-            console.log('valid phone=>>>=>' + SOCKET_URL, socket.id);
-            socket.on('afterTransfer', (fromSocket, body) =>{
-                 // console.log('afterTransfer, from->',fromSocket);
-                 // console.log('afterTransfer,  body->', body);
-                // saveAuthInfo(body);
-                // socket.disconnect();
-             });
-             const token = socket.id.replace('/dishFu#', '');
-             setSockedId(token);
-
-             engine.setToken(token);
-
-
-         });
-         socket.on('disconnect', () => {
-             
-         });
-         return ()=> {
-             socket.disconnect();
-         }
-       }
+         createSocket((token)=> {
+            engine.setToken(token);
+         })
+      }
     }, [validPhone])
 
     useEffect(()=> {
@@ -98,7 +105,7 @@ function SignInForm (props) {
    <Image src={qr} className="border border-primary"/>
    </Container>)
    return (<Container fluid={true} className="p-3 m-3 content-body">
-      =={sockedId}==|| {SettingStore.getState().data.token}
+      =={sockedId}==|| {token}
       <Form>
          {(!validPhone) && (<span>
          <Form.Group>
