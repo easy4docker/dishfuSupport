@@ -48,7 +48,6 @@ function SignInForm (props) {
    const createSocket = (callback) => {
       const socket = socketClient.connect(SOCKET_URL);
       socket.on('connect', () => {
-         console.log('valid phone=>>>=>' + SOCKET_URL, socket.id);
          socket.on('afterTransfer', (fromSocket, body) =>{
               // console.log('afterTransfer, from->',fromSocket);
               // console.log('afterTransfer,  body->', body);
@@ -62,7 +61,6 @@ function SignInForm (props) {
           if (callback) callback(token)
       });
       socket.on('disconnect', () => {
-          console.log('===ddd===ddd===ddd')
           setSockedId('');
           createQR('');
           setValidPhone(false);
@@ -123,7 +121,7 @@ function SignInForm (props) {
       </Form.Group></span>);
 
    const QRSection = (<Alert variant="secondary">
-      <Alert.Heading>Sign in request submitted!</Alert.Heading>
+      <Alert.Heading className="p-3">Request submitted! What's the next step?</Alert.Heading>
       <ol>
          <li>The phone {phone} will receive a text message with an authentication link.</li>
          <li>Click confirmed the link of the txt mesage.</li>
