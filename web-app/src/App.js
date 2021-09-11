@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import  Header  from './modules/Header';
 import  Footer  from './modules/Footer';
 import  Body from './modules/Body';
-import { Spinner } from 'react-bootstrap';
+import { Spinner, Container  } from 'react-bootstrap';
 import './App.css';
 import { useMediaQuery } from 'react-responsive';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -62,7 +62,7 @@ const App = (props) => {
         <Route>
           {headNotAuth}
           <Loading/>
-          <SignInForm/>
+          <Container className="p-3 m-3"><SignInForm/></Container>
           <Footer/>
         </Route>
       </Switch>
