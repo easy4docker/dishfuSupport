@@ -14,10 +14,14 @@ function SignInForm (props) {
    const [validPhone, setValidPhone] = useState(false);
    const [qr, setQr] =  useState('');
    const [sockedId, setSockedId] =  useState('');
+
+   const [s, setS] = useState(false);
+
    const patt = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
 
    const [token, setToken] = useState(SettingStore.getState().data.token);
    
+   let socket = null;
    const onPhoneChanged = (e)=>{
       if (patt.test(e.target.value)) {
         e.target.value = e.target.value.replace(patt, '($1)$2-$3');
@@ -42,6 +46,7 @@ function SignInForm (props) {
         setValidPhone(true);
       });
    }
+   let currentSocket = {};
    const createSocket = (callback) => {
       const socket = socketClient.connect(SOCKET_URL);
       socket.on('connect', () => {
@@ -55,31 +60,35 @@ function SignInForm (props) {
           const token = socket.id.replace('/dishFu#', '');
           setSockedId(token);
           if (callback) callback(token)
-          // engine.setToken(token);
-
       });
       socket.on('disconnect', () => {
-          
+          console.log('===ddd===ddd===ddd')
+          setSockedId('');
       });
-      return ()=> {
-          socket.disconnect();
-      }
+      return socket
    }
-
+   const cleanToken = ()=> {
+      engine.setToken('');
+   }
    useEffect(()=> {
       const t = !SettingStore.getState().data ? '' : SettingStore.getState().data.token;
-      if (t) {
-         setToken(t);
-         createSocket();
-      }
-    }, [])
-
-    useEffect(()=> {
-       if (validPhone) {
-         createSocket((token)=> {
-            engine.setToken(token);
-         })
-      }
+      setToken(t);
+      const socket = (t) ? createSocket() : (!validPhone) ? null : createSocket((token)=> {
+         engine.setToken(token);
+      });
+      const handleSubscribe = SettingStore.subscribe(() => {
+         if (SettingStore.getState()._watcher === 'auth') {
+            const t = !SettingStore.getState().data ? '' : SettingStore.getState().data.token;
+            setToken(t);
+            if (!t && !!socket) {
+               socket.disconnect();
+            }
+         }
+         return false;
+      }); 
+     return ()=> {
+         handleSubscribe();
+     }
     }, [validPhone])
 
     useEffect(()=> {
@@ -99,37 +108,47 @@ function SignInForm (props) {
       }
    }, [sockedId]);
 
-   const authSection =  (<Container className="content-body mt-3">
-   {SettingStore.getState().config.webServer + '/AdminAuth/' + sockedId}
-   <br/>
-   <Image src={qr} className="border border-primary"/>
-   </Container>)
-   return (<Container fluid={true} className="p-3 m-3 content-body">
-      =={sockedId}==|| {token}
-      <Form>
-         {(!validPhone) && (<span>
-         <Form.Group>
-          <Form.Label>Signin with your smart phone</Form.Label>
-          <Form.Control defaultValue="" placeholder="(xxx)xxx-xxxx" type="text" style={{fontSize:'2rem'}}
-            onChange={onPhoneChanged} />
-        </Form.Group>
-        <Form.Group>
-            <Form.Label className="p-2">
-            <Button className="btn btn-warning m-0 mr-3" disabled={!isSubmit()}  onClick={submitPhone}>
-               <FontAwesomeIcon size="1x" icon={faMobileAlt} className="m-0" /> Submit
-            </Button>
-            </Form.Label>
-         </Form.Group></span>)}
-         {(validPhone) && (<Alert variant="secondary mt-3">
-            <Alert.Heading>Sign in request submitted!</Alert.Heading>
-            <ol>
-               <li>The hone {phone} will receive a text message with an authentication link.</li>
-               <li>Click confirmed the link in the txt mesage.</li>
-               <li>Use the phone scan QR code. give the computer client with admin permission.</li>
-            </ol>
-            {authSection}
-         </Alert>)}
+   const phoneForm = (<span>
+      <Form.Group>
+       <Form.Label>Signin with your smart phone</Form.Label>
+       <Form.Control defaultValue="" placeholder="(xxx)xxx-xxxx" type="text" style={{fontSize:'2rem'}}
+         onChange={onPhoneChanged} />
+     </Form.Group>
+     <Form.Group>
+         <Form.Label>
+         <Button className="btn btn-warning m-0 mr-3" disabled={!isSubmit()}  onClick={submitPhone}>
+            <FontAwesomeIcon size="1x" icon={faMobileAlt} className="m-0" /> Submit
+         </Button>
+         </Form.Label>
+      </Form.Group></span>);
+
+   const QRSection = (<Alert variant="secondary">
+      <Alert.Heading>Sign in request submitted!</Alert.Heading>
+      <ol>
+         <li>The hone {phone} will receive a text message with an authentication link.</li>
+         <li>Click confirmed the link in the txt mesage.</li>
+         <li>Use the phone scan QR code. give the computer client with admin permission.</li>
+         </ol>
+         <Container fluid={true}>
+            {SettingStore.getState().config.webServer + '/AdminAuth/' + sockedId}
+            <br/>
+            <Image src={qr} className="border border-primary"/>
+         </Container>
+         <Container fluid={true} className="p-3">
+            <h3>OR </h3>
+         </Container>
+         <Button className="btn btn-warning m-1 mr-3" onClick={cleanToken}>
+            <FontAwesomeIcon size="1x" icon={faMobileAlt} className="mr-2" />Reset
+         </Button>
+      </Alert>)
+
+   return (<Container fluid={true} className="p-3 content-body">
+      
+      <Form className="p-3">
+         {(!token) && phoneForm}
+         {(token) && QRSection}
       </Form>
+      =={sockedId}==|| {token}
    </Container>)
 }
 export { SignInForm }
