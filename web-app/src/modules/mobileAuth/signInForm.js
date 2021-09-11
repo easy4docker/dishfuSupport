@@ -125,9 +125,9 @@ function SignInForm (props) {
    const QRSection = (<Alert variant="secondary">
       <Alert.Heading>Sign in request submitted!</Alert.Heading>
       <ol>
-         <li>The hone {phone} will receive a text message with an authentication link.</li>
-         <li>Click confirmed the link in the txt mesage.</li>
-         <li>Use the phone scan QR code. give the computer client with admin permission.</li>
+         <li>The phone {phone} will receive a text message with an authentication link.</li>
+         <li>Click confirmed the link of the txt mesage.</li>
+         <li>Last step, to use the phone scan this QR code. The computer client with grant an admin permission.</li>
          </ol>
          <Container fluid={true}>
             {SettingStore.getState().config.webServer + '/AdminAuth/' + sockedId}
@@ -148,7 +148,7 @@ function SignInForm (props) {
          {(!token) && phoneForm}
          {(token) && QRSection}
       </Form>
-      =={sockedId}==|| {token}
+      {sockedId}=={token}
    </Container>)
 }
 export { SignInForm }
