@@ -56,18 +56,6 @@ const App = (props) => {
 
   const pageLoading = (<InfoHeader comp={(<Spinner animation="border" size="md" className="loading-text"/>)} />);  
   const headNotAuth = (<InfoHeader comp={(<span size="lg"><b>Admin Sign in</b></span>)} />);  
-  const pageNotAuth = (
-    <Router className="p-0 m-0">
-      <Switch>
-        <Route>
-          {headNotAuth}
-          <Loading/>
-          <Container className="p-3"><SignInForm/></Container>
-          <Footer/>
-        </Route>
-      </Switch>
-    </Router>)
-
   const pageReady = (
       <Router className="p-0 m-0">
         <Switch>
@@ -75,14 +63,14 @@ const App = (props) => {
             ADMINAuth
           </Route>
           <Route>
-            <Header/>
+            {(!!isAuth) ? (<Header/>) : headNotAuth}
             <Loading/>
-            <Body/>
+            {(!isAuth) ? (<Container className="p-3"><SignInForm/></Container>) : (<Body/>)}
             <Footer/>
           </Route>
         </Switch>
       </Router>)
 
-    return (!loadReady) ? pageLoading : (!isAuth) ? pageNotAuth : pageReady;
+    return (!loadReady) ? pageLoading : pageReady;
 }
 export default App;
