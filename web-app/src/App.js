@@ -62,7 +62,7 @@ const App = (props) => {
         <Route>
           {headNotAuth}
           <Loading/>
-          <Container className="p-3 m-3"><SignInForm/></Container>
+          <Container className="p-3"><SignInForm/></Container>
           <Footer/>
         </Route>
       </Switch>
@@ -82,6 +82,4 @@ const App = (props) => {
 
     return (!loadReady) ? pageLoading : (!isAuth) ? pageNotAuth : pageReady;
 }
-
-
 export default App;
