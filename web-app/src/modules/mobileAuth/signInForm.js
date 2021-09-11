@@ -15,8 +15,6 @@ function SignInForm (props) {
    const [qr, setQr] =  useState('');
    const [sockedId, setSockedId] =  useState('');
 
-   const [s, setS] = useState(false);
-
    const patt = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
 
    const [token, setToken] = useState(SettingStore.getState().data.token);
@@ -59,16 +57,35 @@ function SignInForm (props) {
           });
           const token = socket.id.replace('/dishFu#', '');
           setSockedId(token);
+          createQR(token);
+          setValidPhone(false);
           if (callback) callback(token)
       });
       socket.on('disconnect', () => {
           console.log('===ddd===ddd===ddd')
           setSockedId('');
+          createQR('');
+          setValidPhone(false);
       });
       return socket
    }
    const cleanToken = ()=> {
       engine.setToken('');
+   }
+
+   const createQR = (sockedId) => {
+      QRCode.toDataURL(SOCKET_URL + '/AdminAuth/' + sockedId,
+          { 
+              width:338,
+              type: 'image/png',
+              quality: 1.0,
+              color: {
+                  dark: '#000000',  
+                  light: '#0000'
+              }
+          }, (err, str)=>{
+              setQr(str)
+          });
    }
    useEffect(()=> {
       const t = !SettingStore.getState().data ? '' : SettingStore.getState().data.token;
@@ -90,23 +107,6 @@ function SignInForm (props) {
          handleSubscribe();
      }
     }, [validPhone])
-
-    useEffect(()=> {
-      if (sockedId) {
-          QRCode.toDataURL(SOCKET_URL + '/AdminAuth/' + sockedId,
-          { 
-              width:338,
-              type: 'image/png',
-              quality: 1.0,
-              color: {
-                  dark: '#000000',  
-                  light: '#0000'
-              }
-          }, (err, str)=>{
-              setQr(str)
-          });
-      }
-   }, [sockedId]);
 
    const phoneForm = (<span>
       <Form.Group>
