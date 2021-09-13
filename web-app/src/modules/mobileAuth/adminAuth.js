@@ -1,35 +1,62 @@
 import React , { useEffect, useState } from 'react';
 import {useParams } from "react-router-dom";
 import { Container, Alert, Button } from 'react-bootstrap';
-import socketClient  from "socket.io-client";
 import { SettingStore } from '../../stores';
-import { InfoHeader } from '../common';
+import { InfoHeader, Engine } from '../common';
 
 function AdminAuth(props) {
-  const {SocketID } = useParams();
-  const SOCKET_URL = SettingStore.getState().config.sockerServer;
-  const [success, setSuccess ] = useState(false);
+  const engine = new Engine();
   const [isContinue, setIsContinue ] = useState(true);
+  const [success, setSuccess ] = useState(false);
+  const token = useParams().Token;
+  const authcode = useParams().AuthCode;
   const [isAuth, setIsAuth] = useState(SettingStore.getState().data.auth);
-
+  const [authInfo, setAuthInfo ] = useState(false); 
   const permit = ()=> {
-
-    const socket = socketClient.connect(SOCKET_URL);
-    socket.on('connect', function(){
-        socket.emit("transfer",SocketID, socket.id, 
-        SettingStore.getState().data.authInfo);
-        socket.disconnect();
-        setSuccess(true);
+    SettingStore.dispatch({
+      type: 'saveAuthInfo',
+      authInfo: authInfo
     });
+    setSuccess(true);
   }
-  useEffect(() => {}, []);
+  useEffect(() => {
+    console.log('==SettingStore.getState().data.==>', SettingStore.getState().data);
+    engine.loadingOn();
+    engine.DatabaseApi('admin', {
+      action: 'checkTokenAuthCode',
+      data: {
+        token: token, 
+        authcode : authcode
+      }
+    }, (result)=>{
+      engine.loadingOff();
+      if (result.status !== 'success') {
+        setIsAuth(false);
+      } else {
+        setIsAuth(true);
+        setAuthInfo(result.data[0]);
+        console.log(result[0]);
+      }
+    });
 
+  }, []);
 
-const infoSection = (data) => (!!data) && (<div>
-  Auth Code: <b>{data.authCode}</b><br/>
-  Address: <b>{data.address}</b><br/>
-  Roles: <b>{(!data.roles) ? '' : data.roles.join(',')}</b><br/>
-</div>)
+const existAuthInfo = () => {
+  const info = SettingStore.getState().data.authInfo;
+  return (!!info) && (<Container fluid={true} className="alert-secondary p-3 m-1">
+    Current authentication information on this equipment is:<br/>
+    Phone: <b>{authInfo.phone}</b><br/>
+    Authrized Time: <b>{authInfo.created}</b><br/>
+</Container>)
+}
+const newAuthInfo = () => {
+  const info = SettingStore.getState().data.authInfo;
+  return (!!info) && (<Container fluid={true} className="alert-info p-3 m-1">
+  Will set this equipment to:<br/>
+  Phone: <b>{authInfo.phone}</b><br/>
+  Authrized Time: <b>{authInfo.created}</b><br/>
+</Container>)
+}
 
   const Frame = (info) => (<Container fluid={true} className="m-0 p-0">
   <InfoHeader comp={'Auth with Mobile'}/>
@@ -41,15 +68,10 @@ const infoSection = (data) => (!!data) && (<div>
   </Container>
   </Container>)
 
-const warningPage = (<Frame title="Warning" 
+const warningPage = (<Frame title="To confirm:" 
   body={(<Container fluid={true}>
-    <p className="text-danger">
-      The authentication on this mobile will send to the target equipment. Please confirm!
-
-    </p>
-    <p className="alert-secondary p-2">
-      {infoSection(SettingStore.getState().data.authInfo)}
-    </p>
+    {existAuthInfo()}
+    {newAuthInfo()}
     <Button onClick={permit} className="m-2">
         Continue Anyway
     </Button>
@@ -59,11 +81,11 @@ const warningPage = (<Frame title="Warning"
   </Container>
   )} />);
   
-  const unAuthentication = (<Frame title="Warning!" body="The mobile has not been authenticated!" variant="danger m-3 p-3" />);  
-  const successPage = (<Frame title="succeed!" body="The mobile authentication completed!!" />);  
+  const unAuthentication = (<Frame title="Warning!" body="The authentication link fail to process!" variant="danger m-3 p-3" />);  
+  const successPage = (<Frame title="Succeess!" body="The mobile authentication completed! You can use this equipment for desktop admin application." />);  
   const stopContinuePage = (<Frame title="Stop!" body="No worry. The mobile authentication is not going through!" />);
   
-  return SocketID + ((!isAuth) ? unAuthentication : (!isContinue) ? stopContinuePage : (success) ? successPage : warningPage)
+  return  ((!isAuth) ? unAuthentication : (!isContinue) ? stopContinuePage : (success) ? successPage : warningPage)
   ;
 }
 export { AdminAuth };
