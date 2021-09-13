@@ -29,12 +29,13 @@ class Engine {
           });;
     }
 
-    updateSigninForm = (token, phone)=>{
+    updateSigninForm = (token, socketid, phone)=>{
         SettingStore.dispatch({
             type: 'updateSigninForm',
             data : {
                 token: token,
                 phone : phone
+                socketid : socketid
             }
         });
     }
