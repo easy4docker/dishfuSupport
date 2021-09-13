@@ -53,12 +53,11 @@ function SignInForm (props) {
    // --- will remove after server message settig --//
 
    const processServerCode = (action, newsocketid)=> {
-      console.log('SettingStore.getState()==---=====>', SettingStore.getState());
       engine.loadingOn();
       engine.DatabaseApi('admin', {
          action: (action === 'add') ? 'addSessionRecord' : 'updateSessionRecord',
          data: {
-         phone: phone, 
+         phone: phone.replace(patt, '$1$2$3'), 
          visitorId: SettingStore.getState().fp, 
          token : token,
          socketid : (newsocketid) ? newsocketid :  socketId

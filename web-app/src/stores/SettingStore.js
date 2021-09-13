@@ -43,6 +43,7 @@ const reducer = (state = _defaultSetting, action) => {
 
     case 'initStore':
       state.data = action.data;
+      state.fp = action.fp;
       state._watcher = 'afterInit';
       return state;
 
@@ -63,12 +64,10 @@ const loadSettingApi = async (callback) =>{
     const storageName = 'localSettingData';
     let v = _defaultSetting.data;
     try {
-      v.visitorId = result.visitorId;
       v = (!localStorage.getItem(storageName)) ? _defaultSetting.data : JSON.parse(localStorage.getItem(storageName))
-      v.visitorId = result.visitorId;
     } catch(e) {}
     if (typeof callback === 'function') {
-      callback(v);
+      callback(v, result.visitorId);
     }
   })
 
@@ -87,10 +86,11 @@ const saveSettingApi = (data) =>{
 }
 
 /* <--- simulated api */
-loadSettingApi((data)=>{
+loadSettingApi((data, fp)=>{
   SettingStore.dispatch({
     type: 'initStore',
-    data : data
+    data : data,
+    fp : fp
   });
 });
 

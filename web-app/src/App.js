@@ -28,13 +28,8 @@ const App = (props) => {
   useEffect(() => {
     const handleSubscribe = SettingStore.subscribe(() => {
       if (SettingStore.getState()._watcher === 'afterInit') {
-        setTimeout(
-          ()=> {
-            console.log('==fp.visitorId==>>>>>>>>', SettingStore.getState().fp);
-            setloadReady(true);
-          }, 1000
-        )
-        
+        setloadReady(true);
+
       }
       return false;
     }); 
