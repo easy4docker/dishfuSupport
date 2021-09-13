@@ -19,7 +19,7 @@ function AdminAuth(props) {
       type: 'saveAuthInfo',
       authInfo: authInfo
     });
-    setSuccess(true);
+    
   }
   useEffect(() => {
     engine.loadingOn();
@@ -38,6 +38,19 @@ function AdminAuth(props) {
         setAuthInfo(result.data[0]);
       }
     });
+    const handleSubscribe = SettingStore.subscribe(() => {
+      if (SettingStore.getState()._watcher === 'auth') {
+        console.log(8899999);
+        console.log(SettingStore.getState().data.authInfo.authcode, authcode)
+        if (!!SettingStore.getState().data.authInfo && SettingStore.getState().data.authInfo.authcode === authcode) {
+          setSuccess(true);
+        }
+      }
+      return false;
+   }); 
+  return ()=> {
+      handleSubscribe();
+  }
 
   }, []);
 
