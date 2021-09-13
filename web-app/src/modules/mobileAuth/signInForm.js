@@ -130,18 +130,18 @@ function SignInForm (props) {
           });
    }
    useEffect(()=> {
-      const t = !SettingStore.getState().data ? '' : SettingStore.getState().data.token;
+      const t = !SettingStore.getState().data.signinFome ? '' : SettingStore.getState().data.signinFome.token;
       setToken(t);
-      /*
-      const phone = !SettingStore.getState().data ? '' : SettingStore.getState().data.phone;
+      
+      const phone = !SettingStore.getState().data.signinFome ? '' : SettingStore.getState().data.signinFome.phone;
       setToken(phone);
-      */
+      
       const socket = (t) ? createSocket(false) : (!validPhone) ? null : createSocket(true, (token)=> {
-         engine.updateSigninForm(token,'');
+         engine.updateSigninForm(token, phone);
       });
       const handleSubscribe = SettingStore.subscribe(() => {
          if (SettingStore.getState()._watcher === 'auth') {
-            const t = !SettingStore.getState().data ? '' : SettingStore.getState().data.token;
+            const t = !SettingStore.getState().data.signinFome ? '' : SettingStore.getState().data.signinFome.token;
             setToken(t);
             if (!t && !!socket) {
                socket.disconnect();
