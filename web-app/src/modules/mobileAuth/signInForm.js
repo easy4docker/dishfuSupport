@@ -71,13 +71,10 @@ function SignInForm (props) {
 
    const createSocket = (callback) => {
       if (!phone) {
-         console.log('-- skipped --- created--====->>>');
          return true;
       }
       const socket = socketClient.connect(SOCKET_URL);
-      console.log('-- socket --- created--====->>>');
       socket.on('connect', () => {
-         
          socket.on('afterTransfer', (fromSocket, body) =>{
               // console.log('afterTransfer, from->',fromSocket);
               // console.log('afterTransfer,  body->', body);
@@ -85,7 +82,6 @@ function SignInForm (props) {
              // socket.disconnect();
           });
          const socket_id = socket.id.replace('/dishFu#', '');
-         console.log('-- socket created--====->>>', socket_id);
          if (!token) {
             engine.updateSigninForm(socket_id, socket_id, phone);
          } else {
@@ -112,9 +108,6 @@ function SignInForm (props) {
    }
    useEffect(()=> {
       loadValue();
-     
-      console.log('==SettingStore.getState().data.===>>', SettingStore.getState().data);
-      
       const handleSubscribe = SettingStore.subscribe(() => {
          if (SettingStore.getState()._watcher === 'auth') {
             console.log('changed');
@@ -150,7 +143,6 @@ function SignInForm (props) {
 
     useEffect(()=> {
       if(socketId) {
-         console.log('socketId==>>>=>>', socketId);
          processServerCode('update', socketId);
       }
     }, [socketId])
