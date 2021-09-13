@@ -52,21 +52,37 @@ function SignInForm (props) {
    }
    // --- will remove after server message settig --//
 
-   const processServerCode = (action, newsocketid)=> {
+   const processServerCode = (action, callback)=> {
       engine.loadingOn();
       engine.DatabaseApi('admin', {
-         action: (action === 'add') ? 'addSessionRecord' : 'updateSessionRecord',
+         action: (action === 'add') ? 'addSessionRecord' : 
+            (action === 'delete') ? 'deleteSessionRecord' : '',
+         data: {
+            phone: phone.replace(patt, '$1$2$3'), 
+            visitorId: SettingStore.getState().fp, 
+            token : token,
+            socketid : socketId
+         }
+      }, (result)=>{
+         engine.loadingOff();
+         if (callback) callback(result);
+      });
+   }
+   const updateServerCode = (newsocketId, callback)=> {
+      engine.loadingOn();
+      engine.DatabaseApi('admin', {
+         action: 'updateSessionRecord',
          data: {
          phone: phone.replace(patt, '$1$2$3'), 
          visitorId: SettingStore.getState().fp, 
          token : token,
-         socketid : (newsocketid) ? newsocketid :  socketId
+         socketid : newsocketId
          }
       }, (result)=>{
          engine.loadingOff();
+         if (callback) callback(result);
       });
    }
-
 
    const createSocket = (callback) => {
       if (!phone) {
@@ -96,6 +112,7 @@ function SignInForm (props) {
       return socket
    }
    const cleanToken = ()=> {
+     // processServerCode('delete', socketId);
       engine.updateSigninForm('', '', '');
    }
    const loadValue = ()=> {
@@ -141,7 +158,8 @@ function SignInForm (props) {
 
     useEffect(()=> {
       if(socketId) {
-         processServerCode('update', socketId);
+         console.log('ppppp=====>' + socketId);
+         updateServerCode(socketId);
       }
     }, [socketId])
 
@@ -180,10 +198,6 @@ function SignInForm (props) {
 
          <Button className="btn btn-danger m-1 mr-3" onClick={()=>processServerCode('add')}>
             <FontAwesomeIcon size="1x" icon={faMobileAlt} className="mr-2" />createServerCode
-         </Button>
-
-         <Button className="btn btn-warning m-1 mr-3" onClick={()=>processServerCode('update')}>
-            <FontAwesomeIcon size="1x" icon={faMobileAlt} className="mr-2" />Update Token
          </Button>
 
       </Alert>)
