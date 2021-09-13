@@ -3,25 +3,29 @@ import {useParams } from "react-router-dom";
 import { Container, Alert, Button } from 'react-bootstrap';
 import { SettingStore } from '../../stores';
 import { InfoHeader, Engine } from '../common';
+import socketClient  from 'socket.io-client';
 
 function CrossFromMobile(props) {
   const engine = new Engine();
   const patt = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
-
+  const SOCKET_URL = SettingStore.getState().config.sockerServer;
+  
   const [isContinue, setIsContinue ] = useState(true);
   const [success, setSuccess ] = useState(false);
   const token = useParams().token;
   const [isAuth, setIsAuth] = useState(SettingStore.getState().data.auth);
-  const [authInfo, setAuthInfo ] = useState(false); 
   const permit = ()=> {
-    SettingStore.dispatch({
-      type: 'saveAuthInfo',
-      authInfo: authInfo
+    const socket = socketClient.connect(SOCKET_URL);
+    socket.on('connect', function(){
+        socket.emit("transfer", token, socket.id, 
+        SettingStore.getState().data.authInfo);
+        socket.disconnect();
+        setSuccess(true);
     });
-    
   }
   useEffect(() => {
     const info = SettingStore.getState().data.authInfo;
+    console.log(info);
     if (info.token != token) {
       engine.loadingOn();
       engine.DatabaseApi('admin', {
@@ -36,7 +40,6 @@ function CrossFromMobile(props) {
           setIsAuth(false);
         } else {
           setIsAuth(true);
-          setAuthInfo(result.data[0]);
         }
       });
     }
@@ -48,14 +51,6 @@ const existAuthInfo = () => {
   return (!!info) && (<Container fluid={true} className="alert-secondary p-3 m-1">
     Current authentication information on this equipment is:<br/>
     Phone: <b>{info.phone.replace(patt, '($1)$2-$3')}</b><br/>
-    Authrized Time: <b>{info.created}</b><br/>
-</Container>)
-}
-const newAuthInfo = () => {
-  const info = authInfo;
-  return (!!info) && (<Container fluid={true} className="alert-info p-3 m-1">
-  Will set this equipment to:<br/>
-  Phone: <b>{info.phone.replace(patt, '($1)$2-$3')}</b><br/>
     Authrized Time: <b>{info.created}</b><br/>
 </Container>)
 }
@@ -73,9 +68,8 @@ const newAuthInfo = () => {
 const warningPage = (<Frame title="To confirm:" 
   body={(<Container fluid={true}>
     {existAuthInfo()}
-    {newAuthInfo()}
     <Button onClick={permit} className="m-2">
-        Continue Anyway
+        Authorize the desktop
     </Button>
     <Button onClick={ ()=> { setIsContinue(false)} } variant="danger" className="m-2">
         Stop
