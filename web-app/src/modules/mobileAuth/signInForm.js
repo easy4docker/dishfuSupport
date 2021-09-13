@@ -64,7 +64,6 @@ function SignInForm (props) {
          }
       }, (result)=>{
          engine.loadingOff();
-         console.log(result);
       });
    }
 
@@ -110,7 +109,6 @@ function SignInForm (props) {
       loadValue();
       const handleSubscribe = SettingStore.subscribe(() => {
          if (SettingStore.getState()._watcher === 'auth') {
-            console.log('changed');
             loadValue();
          }
          return false;
