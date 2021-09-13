@@ -154,7 +154,7 @@ function SignInForm (props) {
          <li>Last step, to use the phone scan this QR code. The computer client with grant an admin permission.</li>
          </ol>
          <Container fluid={true}>
-            {WEBSERVER_URL + '/AdminAuth/' + sockedId}
+            {WEBSERVER_URL + '/crossFromMobile/' + sockedId}
             <br/>
             <Image src={qr} className="border border-primary"/>
          </Container>

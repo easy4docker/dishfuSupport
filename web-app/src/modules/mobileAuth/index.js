@@ -1,3 +1,4 @@
 import { SignInForm } from './signInForm';
 import { AdminAuth } from './adminAuth';
-export { SignInForm, AdminAuth }
+import { CrossFromMobile } from './crossFromMobile';
+export { SignInForm, AdminAuth, CrossFromMobile }
