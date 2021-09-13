@@ -102,7 +102,8 @@ function SignInForm (props) {
           setSockedId(token);
           createQR(token);
           setValidPhone(false);
-          if (callback) callback(token)
+        //  engine.updateSigninForm(token, phone);
+          if (callback) callback(token, phone)
       });
       socket.on('disconnect', () => {
           setSockedId('');
@@ -130,13 +131,14 @@ function SignInForm (props) {
           });
    }
    useEffect(()=> {
+      console.log('==SettingStore.getState().data.===>>', SettingStore.getState().data);
       const t = !SettingStore.getState().data.signinFome ? '' : SettingStore.getState().data.signinFome.token;
       setToken(t);
       
       const phone = !SettingStore.getState().data.signinFome ? '' : SettingStore.getState().data.signinFome.phone;
       setToken(phone);
       
-      const socket = (t) ? createSocket(false) : (!validPhone) ? null : createSocket(true, (token)=> {
+      const socket = (t) ? createSocket(false) : (!validPhone) ? null : createSocket(true, (token, phone)=> {
          engine.updateSigninForm(token, phone);
       });
       const handleSubscribe = SettingStore.subscribe(() => {
