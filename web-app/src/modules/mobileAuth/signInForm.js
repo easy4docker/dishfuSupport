@@ -54,7 +54,24 @@ function SignInForm (props) {
         data: {
          phone: '5108467571', 
          visitorId: SettingStore.getState().fp, 
-         token : token
+         token : token,
+         socketid : sockedId
+        }
+      }, (result)=>{
+        engine.loadingOff();
+        console.log(result);
+      });
+   }
+
+   const updateSocketId = (socketid)=> {
+      engine.loadingOn();
+      engine.DatabaseApi('admin', {
+        action: 'addSessionRecord',
+        data: {
+         phone: '5108467571', 
+         visitorId: SettingStore.getState().fp, 
+         token : token,
+         socketid : socketid
         }
       }, (result)=>{
         engine.loadingOff();
