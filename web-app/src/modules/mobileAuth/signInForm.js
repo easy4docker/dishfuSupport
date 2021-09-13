@@ -11,16 +11,16 @@ function SignInForm (props) {
    const SOCKET_URL = SettingStore.getState().config.sockerServer;
    const WEBSERVER_URL = SettingStore.getState().config.webServer;
    const engine = new Engine();
-   const [phone, setPhone] = useState(!SettingStore.getState().data.signinFome ? '' : SettingStore.getState().data.signinFome.phone);
-   const [validPhone, setValidPhone] = useState(false);
-   const [qr, setQr] =  useState('');
+
+   const [phone, setPhone] = useState('');
+   const [token, setToken] = useState('');
    const [sockedId, setSockedId] =  useState('');
 
+   const [validPhone, setValidPhone] = useState(false);
+   const [qr, setQr] =  useState('');
+  
    const patt = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
 
-   const [token, setToken] = useState('');
-   // !SettingStore.getState().data.signinFome ? '' : 
-   // SettingStore.getState().data.signinFome.token
    let socket = null;
    const onPhoneChanged = (e)=>{
       if (patt.test(e.target.value)) {
@@ -53,7 +53,7 @@ function SignInForm (props) {
       engine.DatabaseApi('admin', {
         action: 'addSessionRecord',
         data: {
-         phone: '5108467571', 
+         phone: phone, 
          visitorId: SettingStore.getState().fp, 
          token : token,
          socketid : sockedId
@@ -64,23 +64,6 @@ function SignInForm (props) {
       });
    }
 
-   const updateSocketId = (socketid)=> {
-      engine.loadingOn();
-      engine.DatabaseApi('admin', {
-        action: 'addSessionRecord',
-        data: {
-         phone: '5108467571', 
-         visitorId: SettingStore.getState().fp, 
-         token : token,
-         socketid : socketid
-        }
-      }, (result)=>{
-        engine.loadingOff();
-        console.log(result);
-      });
-   }
-
-   let currentSocket = {};
    const createSocket = (isNewSession, callback) => {
       const socket = socketClient.connect(SOCKET_URL);
       socket.on('connect', () => {
@@ -92,13 +75,10 @@ function SignInForm (props) {
              // socket.disconnect();
           });
           const token = socket.id.replace('/dishFu#', '');
-
           if (isNewSession) {
             // ASK create a room 
             console.log('We need new room token ===>' + token);
          }
-
-
           setSockedId(token);
           createQR(token);
           setValidPhone(false);
@@ -136,7 +116,7 @@ function SignInForm (props) {
       setToken(t);
       
       const phone = !SettingStore.getState().data.signinFome ? '' : SettingStore.getState().data.signinFome.phone;
-      setToken(phone);
+      setPhone(phone);
       
       const socket = (t) ? createSocket(false) : (!validPhone) ? null : createSocket(true, (token, phone)=> {
          engine.updateSigninForm(token, phone);
