@@ -156,8 +156,11 @@ function SignInForm (props) {
          if (token === socketId) {
             console.log('add once===============>');
             processServerCode('add', ()=>{
+               console.log('after add ===============>', token);
                createQR(token);
             });
+         } else {
+            createQR(token);
          }
       }
     }, [token])
