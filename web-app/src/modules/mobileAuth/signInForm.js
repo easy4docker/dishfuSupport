@@ -154,12 +154,12 @@ function SignInForm (props) {
       if(token) {
          createSocket();
          createQR(token);
+         processServerCode('add');
       }
     }, [token])
 
     useEffect(()=> {
       if(socketId) {
-         console.log('ppppp=====>' + socketId);
          updateServerCode(socketId);
       }
     }, [socketId])
@@ -196,11 +196,6 @@ function SignInForm (props) {
          <Button className="btn btn-warning m-1 mr-3" onClick={cleanToken}>
             <FontAwesomeIcon size="1x" icon={faMobileAlt} className="mr-2" />Reset
          </Button>
-
-         <Button className="btn btn-danger m-1 mr-3" onClick={()=>processServerCode('add')}>
-            <FontAwesomeIcon size="1x" icon={faMobileAlt} className="mr-2" />createServerCode
-         </Button>
-
       </Alert>)
 
    return (<Container fluid={true} className="p-3 content-body">
