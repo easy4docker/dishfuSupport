@@ -112,8 +112,9 @@ function SignInForm (props) {
       return socket
    }
    const cleanToken = ()=> {
-     // processServerCode('delete', socketId);
-      engine.updateSigninForm('', '', '');
+      processServerCode('delete', ()=>{
+         engine.updateSigninForm('', '', '');
+      });
    }
    const loadValue = ()=> {
       const st = SettingStore.getState().data.signinForm;
