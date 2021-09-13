@@ -6,6 +6,8 @@ import { InfoHeader, Engine } from '../common';
 
 function AdminAuth(props) {
   const engine = new Engine();
+  const patt = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+
   const [isContinue, setIsContinue ] = useState(true);
   const [success, setSuccess ] = useState(false);
   const token = useParams().Token;
@@ -43,16 +45,16 @@ const existAuthInfo = () => {
   const info = SettingStore.getState().data.authInfo;
   return (!!info) && (<Container fluid={true} className="alert-secondary p-3 m-1">
     Current authentication information on this equipment is:<br/>
-    Phone: <b>{authInfo.phone}</b><br/>
-    Authrized Time: <b>{authInfo.created}</b><br/>
+    Phone: <b>{info.phone.replace(patt, '($1)$2-$3')}</b><br/>
+    Authrized Time: <b>{info.created}</b><br/>
 </Container>)
 }
 const newAuthInfo = () => {
   const info = SettingStore.getState().data.authInfo;
   return (!!info) && (<Container fluid={true} className="alert-info p-3 m-1">
   Will set this equipment to:<br/>
-  Phone: <b>{authInfo.phone}</b><br/>
-  Authrized Time: <b>{authInfo.created}</b><br/>
+  Phone: <b>{info.phone.replace(patt, '($1)$2-$3')}</b><br/>
+    Authrized Time: <b>{info.created}</b><br/>
 </Container>)
 }
 
