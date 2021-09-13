@@ -14,8 +14,8 @@ function SignInForm (props) {
 
    const [phone, setPhone] = useState('');
    const [token, setToken] = useState('');
-   const [sockedId, setSockedId] =  useState('');
-
+   const [socketId, setSocketId] =  useState('');
+   
    const [validPhone, setValidPhone] = useState(false);
    const [qr, setQr] =  useState('');
   
@@ -44,33 +44,41 @@ function SignInForm (props) {
         }
       }, (result)=>{
         engine.loadingOff();
-        createSocket();
+        if (result.status === 'success') {
+            setValidPhone(patt.test(phone));
+            createSocket();
+        }
       });
    }
    // --- will remove after server message settig --//
 
-   const createServerCode = ()=> {
+   const processServerCode = (action, newsocketid)=> {
+      console.log('SettingStore.getState()==---=====>', SettingStore.getState());
       engine.loadingOn();
       engine.DatabaseApi('admin', {
-        action: 'addSessionRecord',
-        data: {
+         action: (action === 'add') ? 'addSessionRecord' : 'updateSessionRecord',
+         data: {
          phone: phone, 
          visitorId: SettingStore.getState().fp, 
          token : token,
-         socketid : sockedId
-        }
+         socketid : (newsocketid) ? newsocketid :  socketId
+         }
       }, (result)=>{
-        engine.loadingOff();
-        console.log(result);
+         engine.loadingOff();
+         console.log(result);
       });
    }
 
+
    const createSocket = (callback) => {
       if (!phone) {
+         console.log('-- skipped --- created--====->>>');
          return true;
       }
       const socket = socketClient.connect(SOCKET_URL);
+      console.log('-- socket --- created--====->>>');
       socket.on('connect', () => {
+         
          socket.on('afterTransfer', (fromSocket, body) =>{
               // console.log('afterTransfer, from->',fromSocket);
               // console.log('afterTransfer,  body->', body);
@@ -78,6 +86,7 @@ function SignInForm (props) {
              // socket.disconnect();
           });
          const socket_id = socket.id.replace('/dishFu#', '');
+         console.log('-- socket created--====->>>', socket_id);
          if (!token) {
             engine.updateSigninForm(socket_id, socket_id, phone);
          } else {
@@ -86,7 +95,7 @@ function SignInForm (props) {
          
       });
       socket.on('disconnect', () => {
-          setSockedId('');
+          setSocketId('');
           createQR('');
           setValidPhone(false);
       });
@@ -95,8 +104,31 @@ function SignInForm (props) {
    const cleanToken = ()=> {
       engine.updateSigninForm('', '', '');
    }
+   const loadValue = ()=> {
+      const st = SettingStore.getState().data.signinForm;
+         setPhone(!st ? '' : st.phone);
+         setSocketId(!st ? '' : st.socketid);
+         setValidPhone(patt.test(st.phone));
+         setToken(!st ? '' : st.token);
+   }
+   useEffect(()=> {
+      loadValue();
+     
+      console.log('==SettingStore.getState().data.===>>', SettingStore.getState().data);
+      
+      const handleSubscribe = SettingStore.subscribe(() => {
+         if (SettingStore.getState()._watcher === 'auth') {
+            console.log('changed');
+            loadValue();
+         }
+         return false;
+      }); 
+     return ()=> {
+         handleSubscribe();
+     }
+    }, [])
 
-   const createQR = (token) => {
+    const createQR = (token) => {
       QRCode.toDataURL(WEBSERVER_URL + '/crossFromMobile/' + token,
           { 
               width:338,
@@ -110,31 +142,19 @@ function SignInForm (props) {
               setQr(str)
           });
    }
-   const loadValue = ()=> {
-      const st = SettingStore.getState().data.signinForm;
-      if (st.phone) {
-         setToken(!st ? '' : st.token);
-         setPhone(!st ? '' : st.phone);
-         setPhone(phone);
-         if( st.token) createQR( st.token);
+    useEffect(()=> {
+      if(token) {
+         createSocket();
+         createQR(token);
       }
+    }, [token])
 
-   }
-   useEffect(()=> {
-      loadValue();
-      console.log('==SettingStore.getState().data.===>>', SettingStore.getState().data);
-      createSocket();
-      const handleSubscribe = SettingStore.subscribe(() => {
-         if (SettingStore.getState()._watcher === 'auth') {
-            console.log('changed');
-            loadValue();
-         }
-         return false;
-      }); 
-     return ()=> {
-         handleSubscribe();
-     }
-    }, [validPhone])
+    useEffect(()=> {
+      if(socketId) {
+         console.log('socketId==>>>=>>', socketId);
+         processServerCode('update', socketId);
+      }
+    }, [socketId])
 
    const phoneForm = (<span>
       <Form.Group>
@@ -158,7 +178,7 @@ function SignInForm (props) {
          <li>Last step, to use the phone scan this QR code. The computer client with grant an admin permission.</li>
          </ol>
          <Container fluid={true}>
-            {WEBSERVER_URL + '/crossFromMobile/' + sockedId}
+            {WEBSERVER_URL + '/crossFromMobile/' + socketId}
             <br/>
             <Image src={qr} className="border border-primary"/>
          </Container>
@@ -169,8 +189,12 @@ function SignInForm (props) {
             <FontAwesomeIcon size="1x" icon={faMobileAlt} className="mr-2" />Reset
          </Button>
 
-         <Button className="btn btn-danger m-1 mr-3" onClick={createServerCode}>
+         <Button className="btn btn-danger m-1 mr-3" onClick={()=>processServerCode('add')}>
             <FontAwesomeIcon size="1x" icon={faMobileAlt} className="mr-2" />createServerCode
+         </Button>
+
+         <Button className="btn btn-warning m-1 mr-3" onClick={()=>processServerCode('update')}>
+            <FontAwesomeIcon size="1x" icon={faMobileAlt} className="mr-2" />Update Token
          </Button>
 
       </Alert>)
@@ -178,10 +202,12 @@ function SignInForm (props) {
    return (<Container fluid={true} className="p-3 content-body">
       
       <Form className="p-3">
-         {(!phone) && phoneForm}
-         {(!!phone && !!token) && QRSection}
+         {(!validPhone) && phoneForm}
+         {(validPhone) && QRSection}
       </Form>
-      {sockedId}=={token}
+      socketId:{socketId}
+      <hr/>
+      token:{token}
    </Container>)
 }
 export { SignInForm }

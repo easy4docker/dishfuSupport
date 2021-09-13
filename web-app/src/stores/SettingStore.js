@@ -56,21 +56,27 @@ const SettingStore = createStore(reducer, composeWithDevTools());
 
 const loadSettingApi = async (callback) =>{
   const fpPromise = FingerprintJS.load();
-  const fp = await fpPromise
-  const fpRecord = await fp.get()
-  setTimeout(
-    ()=>{
-      const storageName = 'localSettingData';
-      let v = _defaultSetting.data;
-      try {
-        v.visitorId = fpRecord.visitorId;
-        v = (!localStorage.getItem(storageName)) ? _defaultSetting.data : JSON.parse(localStorage.getItem(storageName))
-      } catch(e) {}
-      if (typeof callback === 'function') {
-        callback(v);
-      }
-    }, 200
-  );
+  fpPromise.then(fp => fp.get())
+  .then(result => {
+    // This is the visitor identifier:
+    const visitorId = result.visitorId
+    const storageName = 'localSettingData';
+    let v = _defaultSetting.data;
+    try {
+      v.visitorId = result.visitorId;
+      v = (!localStorage.getItem(storageName)) ? _defaultSetting.data : JSON.parse(localStorage.getItem(storageName))
+      v.visitorId = result.visitorId;
+    } catch(e) {}
+    if (typeof callback === 'function') {
+      callback(v);
+    }
+  })
+
+  //setTimeout(
+  //  ()=>{
+
+ //   }, 1000
+ // );
 }
 const saveSettingApi = (data) =>{
   setTimeout(
@@ -81,8 +87,6 @@ const saveSettingApi = (data) =>{
 }
 
 /* <--- simulated api */
-
-
 loadSettingApi((data)=>{
   SettingStore.dispatch({
     type: 'initStore',

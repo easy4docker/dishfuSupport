@@ -28,7 +28,13 @@ const App = (props) => {
   useEffect(() => {
     const handleSubscribe = SettingStore.subscribe(() => {
       if (SettingStore.getState()._watcher === 'afterInit') {
-        setloadReady(true);
+        setTimeout(
+          ()=> {
+            console.log('==fp.visitorId==>>>>>>>>', SettingStore.getState().fp);
+            setloadReady(true);
+          }, 1000
+        )
+        
       }
       return false;
     }); 
@@ -36,14 +42,14 @@ const App = (props) => {
     (async()=>{
       console.log(await fp.load());
     })();
-    
+    /*
     setTimeout(
       ()=> {
         console.log('==fp.visitorId==', fp.visitorId);
         SettingStore.getState().fp = fp.visitorId;
         console.log(SettingStore.getState().fp);
       }, 1000
-    )
+    )*/
     SettingStore.dispatch({ type: 'loadScreenModel',
       screenModel: screenModel
     });
