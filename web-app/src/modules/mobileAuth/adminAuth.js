@@ -40,8 +40,6 @@ function AdminAuth(props) {
     });
     const handleSubscribe = SettingStore.subscribe(() => {
       if (SettingStore.getState()._watcher === 'auth') {
-        console.log(8899999);
-        console.log(SettingStore.getState().data.authInfo.authcode, authcode)
         if (!!SettingStore.getState().data.authInfo && SettingStore.getState().data.authInfo.authcode === authcode) {
           setSuccess(true);
         }
@@ -63,7 +61,7 @@ const existAuthInfo = () => {
 </Container>)
 }
 const newAuthInfo = () => {
-  const info = SettingStore.getState().data.authInfo;
+  const info = authInfo;
   return (!!info) && (<Container fluid={true} className="alert-info p-3 m-1">
   Will set this equipment to:<br/>
   Phone: <b>{info.phone.replace(patt, '($1)$2-$3')}</b><br/>
