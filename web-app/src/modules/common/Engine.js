@@ -29,10 +29,13 @@ class Engine {
           });;
     }
 
-    setToken = (token)=>{
+    updateSigninForm = (token, phone)=>{
         SettingStore.dispatch({
-            type: 'updateToken',
-            token: token
+            type: 'updateSigninForm',
+            data : {
+                token: token,
+                phone : phone
+            }
         });
     }
 

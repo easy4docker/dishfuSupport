@@ -11,15 +11,16 @@ function SignInForm (props) {
    const SOCKET_URL = SettingStore.getState().config.sockerServer;
    const WEBSERVER_URL = SettingStore.getState().config.webServer;
    const engine = new Engine();
-   const [phone, setPhone] = useState('');
+   const [phone, setPhone] = useState(!SettingStore.getState().data.signinFome ? '' : SettingStore.getState().data.signinFome.phone);
    const [validPhone, setValidPhone] = useState(false);
    const [qr, setQr] =  useState('');
    const [sockedId, setSockedId] =  useState('');
 
    const patt = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
 
-   const [token, setToken] = useState(SettingStore.getState().data.token);
-   
+   const [token, setToken] = useState('');
+   // !SettingStore.getState().data.signinFome ? '' : 
+   // SettingStore.getState().data.signinFome.token
    let socket = null;
    const onPhoneChanged = (e)=>{
       if (patt.test(e.target.value)) {
@@ -111,7 +112,7 @@ function SignInForm (props) {
       return socket
    }
    const cleanToken = ()=> {
-      engine.setToken('');
+      engine.updateSigninForm('', '');
    }
 
    const createQR = (sockedId) => {
@@ -131,8 +132,12 @@ function SignInForm (props) {
    useEffect(()=> {
       const t = !SettingStore.getState().data ? '' : SettingStore.getState().data.token;
       setToken(t);
+      /*
+      const phone = !SettingStore.getState().data ? '' : SettingStore.getState().data.phone;
+      setToken(phone);
+      */
       const socket = (t) ? createSocket(false) : (!validPhone) ? null : createSocket(true, (token)=> {
-         engine.setToken(token);
+         engine.updateSigninForm(token,'');
       });
       const handleSubscribe = SettingStore.subscribe(() => {
          if (SettingStore.getState()._watcher === 'auth') {
