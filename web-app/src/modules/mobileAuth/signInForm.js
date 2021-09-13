@@ -98,7 +98,7 @@ function SignInForm (props) {
    }
 
    const createQR = (sockedId) => {
-      QRCode.toDataURL(WEBSERVER_URL + '/AdminAuth/' + sockedId,
+      QRCode.toDataURL(WEBSERVER_URL + '/crossFromMobile/' + sockedId,
           { 
               width:338,
               type: 'image/png',

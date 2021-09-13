@@ -10,8 +10,8 @@ function AdminAuth(props) {
 
   const [isContinue, setIsContinue ] = useState(true);
   const [success, setSuccess ] = useState(false);
-  const token = useParams().Token;
-  const authcode = useParams().AuthCode;
+  const token = useParams().token;
+  const authcode = useParams().authcode;
   const [isAuth, setIsAuth] = useState(SettingStore.getState().data.auth);
   const [authInfo, setAuthInfo ] = useState(false); 
   const permit = ()=> {

@@ -60,7 +60,7 @@ const App = (props) => {
   const pageReady = (
       <Router className="p-0 m-0">
         <Switch>
-          <Route exact path="/adminAuth/:Token/:AuthCode">
+          <Route exact path="/adminAuth/:token/:authcode">
             <AdminAuth/>
           </Route>
           <Route>
