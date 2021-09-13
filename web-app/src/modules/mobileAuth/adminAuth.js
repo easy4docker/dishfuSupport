@@ -20,7 +20,6 @@ function AdminAuth(props) {
     setSuccess(true);
   }
   useEffect(() => {
-    console.log('==SettingStore.getState().data.==>', SettingStore.getState().data);
     engine.loadingOn();
     engine.DatabaseApi('admin', {
       action: 'checkTokenAuthCode',
@@ -35,7 +34,6 @@ function AdminAuth(props) {
       } else {
         setIsAuth(true);
         setAuthInfo(result.data[0]);
-        console.log(result[0]);
       }
     });
 
