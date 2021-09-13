@@ -153,8 +153,12 @@ function SignInForm (props) {
     useEffect(()=> {
       if(token) {
          createSocket();
-         createQR(token);
-         processServerCode('add');
+         if (token === socketId) {
+            console.log('add once===============>');
+            processServerCode('add', ()=>{
+               createQR(token);
+            });
+         }
       }
     }, [token])
 
