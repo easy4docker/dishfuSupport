@@ -5,7 +5,7 @@ import  FingerprintJS  from '@fingerprintjs/fingerprintjs'
 console.log('window.location.hostname-->', window.location.hostname);
 const _defaultSetting = {ready: false, loading: {}, screenModel:{}, _watcher:'',
       fp : '',
-      data : {signinFome: {}, token:'', isAuth: false},
+      data : {signinForm: {}, isAuth: false, authInfo: {}},
       config: {
         apiServer     : 'http://192.168.86.126:3001',
         webServer     : 'http://192.168.86.126:3006',
@@ -18,11 +18,10 @@ const reducer = (state = _defaultSetting, action) => {
   state._watcher = '';
   switch(action.type) {
     case 'updateSigninForm':
-      state.data.signinFome = action.data;
+      state.data.signinForm = action.data;
       state._watcher = 'auth';
       saveSettingApi(state.data);
       return state;
-
     case 'saveAuthInfo':
       state.data.authInfo = action.authInfo;
       state._watcher = 'auth';

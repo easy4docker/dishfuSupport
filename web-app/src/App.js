@@ -52,7 +52,7 @@ const App = (props) => {
       handleSubscribe();
   }
   }, []);
-  // localStorage.clear();
+  // localStorage.clear(); //=====
   console.log('called localStorage.clear()');
 
   const pageLoading = (<InfoHeader comp={(<Spinner animation="border" size="md" className="loading-text"/>)} />);  
