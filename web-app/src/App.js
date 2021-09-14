@@ -55,9 +55,6 @@ const App = (props) => {
       return false;
     }); 
 
-    (async()=>{
-     // console.log(await fp.load());
-    })();
     SettingStore.dispatch({ type: 'loadScreenModel',
       screenModel: screenModel
     });
@@ -67,7 +64,6 @@ const App = (props) => {
   }
   }, []);
   // localStorage.clear(); //=====
-  console.log('called localStorage.clear()');
 
   const pageLoading = (<InfoHeader comp={(<Spinner animation="border" size="md" className="loading-text"/>)} />);  
   const headNotAuth = (<InfoHeader comp={(<span size="lg"><b>Admin Sign in</b></span>)} />);  
