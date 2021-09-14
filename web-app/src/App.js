@@ -64,7 +64,7 @@ const App = (props) => {
       handleSubscribe();
   }
   }, []);
-  localStorage.clear(); //=====
+  // localStorage.clear(); //=====
 
   const pageLoading = (<InfoHeader comp={(<Spinner animation="border" size="md" className="loading-text"/>)} />);  
   const headNotAuth = (<InfoHeader comp={(<span size="lg"><b>Admin Sign in</b></span>)} />);  
