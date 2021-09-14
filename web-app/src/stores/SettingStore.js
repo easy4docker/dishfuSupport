@@ -24,9 +24,15 @@ const reducer = (state = _defaultSetting, action) => {
       return state;
     case 'saveAuthInfo':
       state.data.authInfo = action.authInfo;
-      state._watcher = 'auth';
+      state._watcher = 'forceAuth';
       saveSettingApi(state.data);
       return state;
+      /*
+    case 'forceAuth':
+      state.data.isAuth = action.isAuth;
+      state._watcher = 'forceAuth';
+      saveSettingApi(state.data);
+      return state;*/
     /* --- None api action  --> */
     case 'loadScreenModel':
       state.screenModel = action.screenModel;

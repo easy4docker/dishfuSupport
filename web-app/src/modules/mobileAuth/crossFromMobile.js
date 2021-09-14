@@ -12,21 +12,43 @@ function CrossFromMobile(props) {
   
   const [isContinue, setIsContinue ] = useState(true);
   const [success, setSuccess ] = useState(false);
-  const token = useParams().token;
-  const [isAuth, setIsAuth] = useState(SettingStore.getState().data.auth);
+  const params = useParams();
+  const targetToken = useParams().token;
+  const targetPhone = useParams().phone;
+
+  const [targetSocket, setTargetSocket] = useState('');
+  const [isAuth, setIsAuth] = useState('');
   const permit = ()=> {
+    console.log('======permit====>' + targetSocket)
     const socket = socketClient.connect(SOCKET_URL);
     socket.on('connect', function(){
-        socket.emit("transfer", token, socket.id, 
+        socket.emit("transfer",targetSocket, socket.id, 
         SettingStore.getState().data.authInfo);
         socket.disconnect();
         setSuccess(true);
     });
   }
+  const getTargetSocket = ()=> {
+    engine.loadingOn();
+    engine.DatabaseApi('admin', {
+      action: 'getTargetSocket',
+      data: {
+        token: targetToken, 
+        phone : targetPhone
+      }
+    }, (result)=>{
+      const socketid = !result.data || !result.data[0] ? '' : result.data[0].socketid;
+      if (result.status === 'success' && !!socketid) {
+        setTargetSocket(socketid)
+      } 
+    });
+  }
+
   useEffect(() => {
+    getTargetSocket();
     const info = SettingStore.getState().data.authInfo;
-    console.log(info);
-    if (info.token != token) {
+    console.log(info, params);
+    // if (info.token != token) {
       engine.loadingOn();
       engine.DatabaseApi('admin', {
         action: 'checkTokenAuthCode',
@@ -35,6 +57,7 @@ function CrossFromMobile(props) {
           authcode : info.authcode
         }
       }, (result)=>{
+        console.log('---result-->', result);
         engine.loadingOff();
         if (result.status !== 'success') {
           setIsAuth(false);
@@ -42,9 +65,15 @@ function CrossFromMobile(props) {
           setIsAuth(true);
         }
       });
-    }
+   //  }
 
   }, []);
+
+  useEffect(() => {
+    if (targetSocket) {
+    //  permit();
+    }
+  }, [targetSocket]);
 
 const existAuthInfo = () => {
   const info = SettingStore.getState().data.authInfo;
@@ -65,7 +94,7 @@ const existAuthInfo = () => {
   </Container>
   </Container>)
 
-const warningPage = (<Frame title="To confirm:" 
+const warningPage = (targetSocket) && (<Frame title="To confirm:" 
   body={(<Container fluid={true}>
     {existAuthInfo()}
     <Button onClick={permit} className="m-2">

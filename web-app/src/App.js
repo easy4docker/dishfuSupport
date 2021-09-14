@@ -10,9 +10,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { SettingStore } from './stores/';
 import { Loading, FingerPrinter, InfoHeader } from './modules/common';
 import { SignInForm, AdminAuth, CrossFromMobile } from './modules/mobileAuth';
-
+import { Engine } from './modules/common';
 
 const App = (props) => {
+  const engine = new Engine();
+
   const fp = new FingerPrinter();
   const [loadReady, setloadReady] = useState(false);
   const [isAuth, setIsAuth] = useState(false);
@@ -25,11 +27,31 @@ const App = (props) => {
     isRetina : useMediaQuery({ query: '(min-resolution: 2dppx)' })
   };
 
+  const forceAuth = ()=> {
+    const info = SettingStore.getState().data.authInfo;
+    engine.loadingOn();
+    engine.DatabaseApi('admin', {
+       action: 'checkTokenAuthCode',
+       data: {
+          token: info.token, 
+          authcode : info.authcode
+       }
+    }, (result)=>{
+       engine.loadingOff();
+       setIsAuth((result.status === 'success') ? true : false);
+    });
+ }
+
+
   useEffect(() => {
+    
     const handleSubscribe = SettingStore.subscribe(() => {
       if (SettingStore.getState()._watcher === 'afterInit') {
         setloadReady(true);
-
+        // forceAuth(); 
+      }
+      if (SettingStore.getState()._watcher === 'forceAuth') {
+        forceAuth(); 
       }
       return false;
     }); 
@@ -37,14 +59,6 @@ const App = (props) => {
     (async()=>{
       console.log(await fp.load());
     })();
-    /*
-    setTimeout(
-      ()=> {
-        console.log('==fp.visitorId==', fp.visitorId);
-        SettingStore.getState().fp = fp.visitorId;
-        console.log(SettingStore.getState().fp);
-      }, 1000
-    )*/
     SettingStore.dispatch({ type: 'loadScreenModel',
       screenModel: screenModel
     });
@@ -61,8 +75,7 @@ const App = (props) => {
   const pageReady = (
       <Router className="p-0 m-0">
         <Switch>
-        
-          <Route exact path="/CrossFromMobile/:token">
+          <Route exact path="/CrossFromMobile/:phone/:token">
             <CrossFromMobile/>
           </Route>
           <Route exact path="/adminAuth/:token/:authcode">

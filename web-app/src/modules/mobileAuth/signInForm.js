@@ -83,7 +83,15 @@ function SignInForm (props) {
          if (callback) callback(result);
       });
    }
-
+   const saveAuthInfo = (data)=> {
+      const rec = {...data}
+      rec.signInTime = new Date().getTime();
+      console.log('afterTransfer,  rec->', rec);
+      SettingStore.dispatch({
+         type: 'saveAuthInfo',
+         authInfo: rec
+      });
+  }
    const createSocket = (callback) => {
       if (!phone) {
          return true;
@@ -91,10 +99,9 @@ function SignInForm (props) {
       const socket = socketClient.connect(SOCKET_URL);
       socket.on('connect', () => {
          socket.on('afterTransfer', (fromSocket, body) =>{
-              // console.log('afterTransfer, from->',fromSocket);
-              // console.log('afterTransfer,  body->', body);
-             // saveAuthInfo(body);
-             // socket.disconnect();
+             //  console.log('afterTransfer, from->',fromSocket);
+             saveAuthInfo(body);
+             socket.disconnect();
           });
          const socket_id = socket.id.replace('/dishFu#', '');
          if (!token) {
@@ -105,9 +112,11 @@ function SignInForm (props) {
          
       });
       socket.on('disconnect', () => {
+         /*
           setSocketId('');
           createQR('');
           setValidPhone(false);
+          */
       });
       return socket
    }
@@ -123,12 +132,15 @@ function SignInForm (props) {
          setValidPhone(patt.test(st.phone));
          setToken(!st ? '' : st.token);
    }
+
    useEffect(()=> {
       loadValue();
       const handleSubscribe = SettingStore.subscribe(() => {
          if (SettingStore.getState()._watcher === 'auth') {
             loadValue();
          }
+         if (SettingStore.getState()._watcher === 'auth') {
+          }
          return false;
       }); 
      return ()=> {
@@ -136,8 +148,11 @@ function SignInForm (props) {
      }
     }, [])
 
-    const createQR = (token) => {
-      QRCode.toDataURL(WEBSERVER_URL + '/crossFromMobile/' + token,
+    const createQR = (token, phone) => {
+      if (!phone) {
+         setQr('');
+      } else {
+      QRCode.toDataURL(WEBSERVER_URL + '/crossFromMobile/' + phone.replace(patt, '$1$2$3') + '/' + token,
           { 
               width:338,
               type: 'image/png',
@@ -149,6 +164,7 @@ function SignInForm (props) {
           }, (err, str)=>{
               setQr(str)
           });
+      }
    }
     useEffect(()=> {
       if(token) {
@@ -157,10 +173,10 @@ function SignInForm (props) {
             console.log('add once===============>');
             processServerCode('add', ()=>{
                console.log('after add ===============>', token);
-               createQR(token);
+               createQR(token, phone);
             });
          } else {
-            createQR(token);
+            createQR(token, phone);
          }
       }
     }, [token])
@@ -193,7 +209,7 @@ function SignInForm (props) {
          <li>Last step, to use the phone scan this QR code. The computer client with grant an admin permission.</li>
          </ol>
          <Container fluid={true}>
-            {WEBSERVER_URL + '/crossFromMobile/' + socketId}
+            {WEBSERVER_URL + '/crossFromMobile/' + phone.replace(patt, '$1$2$3') + '/' + token}
             <br/>
             <Image src={qr} className="border border-primary"/>
          </Container>
