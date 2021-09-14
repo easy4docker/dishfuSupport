@@ -38,8 +38,6 @@ const App = (props) => {
           authcode : info.authcode
        }
     }, (result)=>{
-      console.log('1233', result);
-      console.log(SettingStore.getState().data);
        engine.loadingOff();
        setIsAuth((result.status === 'success') ? true : false);
     });
@@ -52,9 +50,7 @@ const App = (props) => {
         forceAuth();
       }
       if (SettingStore.getState()._watcher === 'forceAuth') {
-        console.log('--top trigger 1---');
         forceAuth(); 
-        console.log('--top trigger 2---');
       }
       return false;
     }); 

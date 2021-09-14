@@ -47,12 +47,7 @@ const reducer = (state = _defaultSetting, action) => {
       state._watcher = 'forceAuth';
       saveSettingApi(state.data);
       return state;
-      /*
-    case 'forceAuth':
-      state.data.isAuth = action.isAuth;
-      state._watcher = 'forceAuth';
-      saveSettingApi(state.data);
-      return state;*/
+ 
     /* --- None api action  --> */
     case 'loadScreenModel':
       state.screenModel = action.screenModel;
@@ -96,12 +91,6 @@ const loadSettingApi = async (callback) =>{
       callback(v, result.visitorId);
     }
   })
-
-  //setTimeout(
-  //  ()=>{
-
- //   }, 1000
- // );
 }
 const saveSettingApi = (data) =>{
   setTimeout(
