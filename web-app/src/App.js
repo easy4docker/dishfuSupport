@@ -27,9 +27,8 @@ const App = (props) => {
     isRetina : useMediaQuery({ query: '(min-resolution: 2dppx)' })
   };
 
-  const forceAuth = ()=> {
+  const forceAuth = (callback)=> {
     const info = SettingStore.getState().data.authInfo;
-    
     engine.loadingOn();
     engine.DatabaseApi('admin', {
        action: 'checkTokenAuthCode',
@@ -40,14 +39,16 @@ const App = (props) => {
     }, (result)=>{
        engine.loadingOff();
        setIsAuth((result.status === 'success') ? true : false);
+       if (callback) callback();
     });
  }
 
   useEffect(() => {
     const handleSubscribe = SettingStore.subscribe(() => {
       if (SettingStore.getState()._watcher === 'afterInit') {
-        setloadReady(true);
-        forceAuth();
+        forceAuth(()=> {
+          setloadReady(true);
+        });
       }
       if (SettingStore.getState()._watcher === 'forceAuth') {
         forceAuth(); 
