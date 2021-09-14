@@ -35,17 +35,19 @@ function AdminAuth(props) {
         setIsAuth(false);
       } else {
         setIsAuth(true);
+        SettingStore.dispatch({
+          type: 'saveAuthInfo',
+          authInfo: result.data[0]
+        });
+
+       console.log('===nnnn===>', result.data[0]);
+
         setAuthInfo(result.data[0]);
       }
     });
     const handleSubscribe = SettingStore.subscribe(() => {
-      console.log(12355556);
-      console.log(SettingStore.getState()._watcher);
       if (SettingStore.getState()._watcher === 'forceAuth') {
-        alert(123);
-      }
-      if (SettingStore.getState()._watcher === 'forceAuth') {
-        
+        console.log('----SettingStore.getState().data.authInfo--->', SettingStore.getState().data.authInfo);
         if (!!SettingStore.getState().data.authInfo && SettingStore.getState().data.authInfo.authcode === authcode) {
           setSuccess(true);
         }

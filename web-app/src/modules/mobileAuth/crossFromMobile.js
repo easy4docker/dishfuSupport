@@ -50,7 +50,7 @@ function CrossFromMobile(props) {
   useEffect(() => {
     getTargetSocket();
     const info = SettingStore.getState().data.authInfo;
-    console.log(info, params);
+    console.log('---info--->', info, params);
     // if (info.token != token) {
       engine.loadingOn();
       engine.DatabaseApi('admin', {

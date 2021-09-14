@@ -29,6 +29,7 @@ const App = (props) => {
 
   const forceAuth = ()=> {
     const info = SettingStore.getState().data.authInfo;
+    
     engine.loadingOn();
     engine.DatabaseApi('admin', {
        action: 'checkTokenAuthCode',
@@ -37,6 +38,8 @@ const App = (props) => {
           authcode : info.authcode
        }
     }, (result)=>{
+      console.log('1233', result);
+      console.log(SettingStore.getState().data);
        engine.loadingOff();
        setIsAuth((result.status === 'success') ? true : false);
     });
@@ -50,7 +53,7 @@ const App = (props) => {
       }
       if (SettingStore.getState()._watcher === 'forceAuth') {
         console.log('--top trigger 1---');
-        // forceAuth(); 
+        forceAuth(); 
         console.log('--top trigger 2---');
       }
       return false;
@@ -67,7 +70,7 @@ const App = (props) => {
       handleSubscribe();
   }
   }, []);
-   localStorage.clear(); //=====
+  // localStorage.clear(); //=====
   console.log('called localStorage.clear()');
 
   const pageLoading = (<InfoHeader comp={(<Spinner animation="border" size="md" className="loading-text"/>)} />);  

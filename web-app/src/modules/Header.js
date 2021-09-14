@@ -34,7 +34,8 @@ const [expanded, setExpanded] = useState("")
       <Container>
         <Navbar expand="lg" className="p-1" expanded={expanded}>
             <Navbar.Brand as={Link} to="/" className="menu_color"><Logo/></Navbar.Brand>
-            <Navbar.Brand as={Link} to="/auth" className="menu-color">
+            <Navbar.Brand className="menu_color">
+              <AuthHeadItem />
             </Navbar.Brand>
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="me-auto">
