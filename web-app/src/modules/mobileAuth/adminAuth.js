@@ -16,7 +16,7 @@ function AdminAuth(props) {
   const [authInfo, setAuthInfo ] = useState(false); 
   const permit = ()=> {
     SettingStore.dispatch({
-      type: 'saveAuthInfo',
+      type: 'saveAuthAdmin',
       authInfo: authInfo
     });
     
@@ -39,15 +39,11 @@ function AdminAuth(props) {
           type: 'saveAuthInfo',
           authInfo: result.data[0]
         });
-
-       console.log('===nnnn===>', result.data[0]);
-
         setAuthInfo(result.data[0]);
       }
     });
     const handleSubscribe = SettingStore.subscribe(() => {
-      if (SettingStore.getState()._watcher === 'forceAuth') {
-        console.log('----SettingStore.getState().data.authInfo--->', SettingStore.getState().data.authInfo);
+      if (SettingStore.getState()._watcher === 'saveAuthAdmin') {
         if (!!SettingStore.getState().data.authInfo && SettingStore.getState().data.authInfo.authcode === authcode) {
           setSuccess(true);
         }

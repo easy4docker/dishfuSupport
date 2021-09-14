@@ -31,6 +31,15 @@ const reducer = (state = _defaultSetting, action) => {
       saveSettingApi(state.data);
       return state;
 
+    case 'saveAuthAdmin':
+    
+      state.data.authInfo = action.authInfo;
+      state.data.isAuth = true;
+      state._watcher = 'saveAuthAdmin';
+      saveSettingApi(state.data);
+      return state;
+
+        
     case 'signOff':
     
       state.data.authInfo = {};
