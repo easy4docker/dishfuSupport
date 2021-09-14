@@ -23,8 +23,10 @@ const reducer = (state = _defaultSetting, action) => {
       saveSettingApi(state.data);
       return state;
     case 'saveAuthInfo':
+      
       state.data.authInfo = action.authInfo;
       state._watcher = 'forceAuth';
+      console.log('good news===?', action.authInfo);
       saveSettingApi(state.data);
       return state;
       /*

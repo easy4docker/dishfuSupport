@@ -39,7 +39,13 @@ function AdminAuth(props) {
       }
     });
     const handleSubscribe = SettingStore.subscribe(() => {
-      if (SettingStore.getState()._watcher === 'auth') {
+      console.log(12355556);
+      console.log(SettingStore.getState()._watcher);
+      if (SettingStore.getState()._watcher === 'forceAuth') {
+        alert(123);
+      }
+      if (SettingStore.getState()._watcher === 'forceAuth') {
+        
         if (!!SettingStore.getState().data.authInfo && SettingStore.getState().data.authInfo.authcode === authcode) {
           setSuccess(true);
         }
@@ -56,7 +62,7 @@ const existAuthInfo = () => {
   const info = SettingStore.getState().data.authInfo;
   return (!!info) && (<Container fluid={true} className="alert-secondary p-3 m-1">
     Current authentication information on this equipment is:<br/>
-    Phone: <b>{info.phone.replace(patt, '($1)$2-$3')}</b><br/>
+    Phone: <b>{(!info.phone ? '' : info.phone).replace(patt, '($1)$2-$3')}</b><br/>
     Authrized Time: <b>{info.created}</b><br/>
 </Container>)
 }

@@ -43,6 +43,9 @@ function CrossFromMobile(props) {
       } 
     });
   }
+  const purePhone = (phone)=> {
+    return (!phone ? '' : phone).replace(patt, '$1$2$3');
+ }
 
   useEffect(() => {
     getTargetSocket();
@@ -75,11 +78,15 @@ function CrossFromMobile(props) {
     }
   }, [targetSocket]);
 
+const  fmtPhone = (phone)=> {
+  return (!phone ? '' : phone).replace(patt, '($1)$2-$3')
+}
+
 const existAuthInfo = () => {
   const info = SettingStore.getState().data.authInfo;
   return (!!info) && (<Container fluid={true} className="alert-secondary p-3 m-1">
     Current authentication information on this equipment is:<br/>
-    Phone: <b>{info.phone.replace(patt, '($1)$2-$3')}</b><br/>
+    Phone: <b>{fmtPhone(info.phone)}</b><br/>
     Authrized Time: <b>{info.created}</b><br/>
 </Container>)
 }

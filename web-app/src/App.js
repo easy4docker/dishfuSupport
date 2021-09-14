@@ -42,22 +42,22 @@ const App = (props) => {
     });
  }
 
-
   useEffect(() => {
-    
     const handleSubscribe = SettingStore.subscribe(() => {
       if (SettingStore.getState()._watcher === 'afterInit') {
         setloadReady(true);
-        // forceAuth(); 
+        forceAuth();
       }
       if (SettingStore.getState()._watcher === 'forceAuth') {
-        forceAuth(); 
+        console.log('--top trigger 1---');
+        // forceAuth(); 
+        console.log('--top trigger 2---');
       }
       return false;
     }); 
 
     (async()=>{
-      console.log(await fp.load());
+     // console.log(await fp.load());
     })();
     SettingStore.dispatch({ type: 'loadScreenModel',
       screenModel: screenModel
@@ -67,7 +67,7 @@ const App = (props) => {
       handleSubscribe();
   }
   }, []);
-  // localStorage.clear(); //=====
+   localStorage.clear(); //=====
   console.log('called localStorage.clear()');
 
   const pageLoading = (<InfoHeader comp={(<Spinner animation="border" size="md" className="loading-text"/>)} />);  

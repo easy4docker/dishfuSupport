@@ -132,7 +132,9 @@ function SignInForm (props) {
          setValidPhone(patt.test(st.phone));
          setToken(!st ? '' : st.token);
    }
-
+   const purePhone = (phone)=> {
+      return (!phone ? '' : phone).replace(patt, '$1$2$3');
+   }
    useEffect(()=> {
       loadValue();
       const handleSubscribe = SettingStore.subscribe(() => {
@@ -152,7 +154,7 @@ function SignInForm (props) {
       if (!phone) {
          setQr('');
       } else {
-      QRCode.toDataURL(WEBSERVER_URL + '/crossFromMobile/' + phone.replace(patt, '$1$2$3') + '/' + token,
+      QRCode.toDataURL(WEBSERVER_URL + '/crossFromMobile/' + purePhone(phone) + '/' + token,
           { 
               width:338,
               type: 'image/png',
@@ -209,7 +211,7 @@ function SignInForm (props) {
          <li>Last step, to use the phone scan this QR code. The computer client with grant an admin permission.</li>
          </ol>
          <Container fluid={true}>
-            {WEBSERVER_URL + '/crossFromMobile/' + phone.replace(patt, '$1$2$3') + '/' + token}
+            {WEBSERVER_URL + '/crossFromMobile/' +  purePhone(phone) + '/' + token}
             <br/>
             <Image src={qr} className="border border-primary"/>
          </Container>
