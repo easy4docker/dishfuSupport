@@ -80,18 +80,10 @@ function ClientForm (props) {
       });
       return socket
    }
-   const cleanToken = ()=> {
-      processServerCode('delete', ()=>{
-         engine.updateSigninForm('', '', '');
-      });
-   }
    const loadValue = ()=> {
       const st = SettingStore.getState().data.signinForm;
          setSocketId(!st ? '' : st.socketid);
          setToken(!st ? '' : st.token);
-   }
-   const purePhone = (phone)=> {
-      return (!phone ? '' : phone).replace(patt, '$1$2$3');
    }
    useEffect(()=> {
       loadValue();
