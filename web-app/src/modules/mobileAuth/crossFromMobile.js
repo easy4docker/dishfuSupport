@@ -2,8 +2,6 @@ import React , { useEffect, useState } from 'react';
 import {useParams } from "react-router-dom";
 
 import { Container, Alert, Button, Form } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMobileAlt } from '@fortawesome/free-solid-svg-icons';
 
 import { SettingStore } from '../../stores';
 import { InfoHeader, Engine } from '../common';
@@ -15,15 +13,14 @@ function CrossFromMobile(props) {
   const patt = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
   const SOCKET_URL = SettingStore.getState().config.sockerServer;
   
-  const [isContinue, setIsContinue ] = useState(true);
-  const [success, setSuccess ] = useState(false);
-  const params = useParams();
-  const [phone, setPhone] = useState('');
-
-  const [targetSocket, setTargetSocket] = useState('');
-
   const [isAuth, setIsAuth] = useState(props.isAuth);
+  const [phone, setPhone] = useState('5108467571');
+  const [success, setSuccess ] = useState(false);
+  // const [validPhone, setValidPhone] = useState(false);
 
+  const [isContinue, setIsContinue ] = useState(true);
+  const params = useParams();
+  
   const permit = ()=> {
     console.log('======permit==A==>' + params.token)
     const socket = socketClient.connect(SOCKET_URL);
@@ -33,11 +30,11 @@ function CrossFromMobile(props) {
      
       socket.emit("transfer", params.token, socket_id, 'SettingStore.getState().data.authInfo' + new Date().getTime());
       socket.disconnect();
-      // setSuccess(true);
+      setSuccess(true);
     });
   }
   useEffect(() => {
-    permit();
+    // permit();
   }, []);
 
   const Frame = (info) => (<Container fluid={true} className="m-0 p-0">
@@ -62,12 +59,10 @@ function CrossFromMobile(props) {
 
   const onPhoneChanged = (e)=>{
     if (patt.test(e.target.value)) {
-      /*
       e.target.value = e.target.value.replace(patt, '($1)$2-$3');
       setPhone(e.target.value.replace(patt, '($1)$2-$3'));
-      */
     } else {
-      //setPhone('');
+      setPhone('');
     }
   }
   const isSubmit = ()=>{
@@ -75,7 +70,6 @@ function CrossFromMobile(props) {
  }
 
  const submitPhone = ()=> {
-   /*
     engine.loadingOn();
     engine.DatabaseApi('admin', {
       action: 'checkPhone',
@@ -86,27 +80,31 @@ function CrossFromMobile(props) {
     }, (result)=>{
       engine.loadingOff();
       if (result.status === 'success') {
-          setValidPhone(patt.test(phone));
-          createSocket();
+        console.log(result);
+        setSuccess(true);
+        // setValidPhone(patt.test(phone));
+        //  createSocket();
       }
-    });*/
+    });
  }
-  const phoneForm = (<span>
-    <Form.Group>
-     <Form.Label>Signin with your smart phone</Form.Label>
-     <Form.Control defaultValue={phone} placeholder="(xxx)xxx-xxxx" type="text" style={{fontSize:'2rem'}}
-       onChange={onPhoneChanged} />
-   </Form.Group>
-   <Form.Group>
-       <Form.Label>
-       <Button className="btn btn-warning m-0 mr-3" disabled={!isSubmit()}  onClick={submitPhone}>
-          <FontAwesomeIcon size="1x" icon={faMobileAlt} className="m-0" /> Submit
-       </Button>
-       </Form.Label>
-    </Form.Group></span>);
+const phoneForm = (<Frame title="To confirm:" body={(
+    <Container className="p-3">
+      <Form.Group className="p-3">
+      <Form.Label>Your phone number</Form.Label>
+      <Form.Control defaultValue={phone} placeholder="(xxx)xxx-xxxx" type="text" style={{fontSize:'2rem'}}
+        onChange={onPhoneChanged} />
+    </Form.Group>
+    <Form.Group className="p-3">
+        {(!!isSubmit()) && (<Button className="btn btn-info" onClick={submitPhone}
+          style={{width:"100%"}}>
+            Submit
+          </Button>)}
+    </Form.Group>
+    </Container>)} />);
 
-
-  return (isAuth) ? warningPage : phoneForm
+const successPhone = (<Frame title="Succeess!" body="The you authentication has been sent to {phone}. A text message is coming" />);  
+  
+return (isAuth) ? warningPage : ( success) ? successPhone : phoneForm
 
 /*
 

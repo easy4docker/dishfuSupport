@@ -79,14 +79,11 @@ const App = (props) => {
   // localStorage.clear(); //=====
   const pageLoading = (<InfoHeader comp={(<Spinner animation="border" size="md" className="loading-text"/>)} />);  
   const headNotAuth = (<InfoHeader comp={(<span size="lg"><b>Admin Sign in</b></span>)} />);  
-  const mobileAuth = (<InfoHeader comp={(<span size="lg"><b>Mobile Authentication</b></span>)} />);  
   const pageReady = (
       <Router className="p-0 m-0">
         <Switch>
           <Route exact path="/CrossFromMobile/:token">
-            {mobileAuth}
-              <CrossFromMobile isAuth={isAuth}/>
-            <Footer/>
+            <CrossFromMobile isAuth={isAuth}/>
           </Route>
           <Route>
             {(!!isAuth) ? (<Header/>) : headNotAuth}
