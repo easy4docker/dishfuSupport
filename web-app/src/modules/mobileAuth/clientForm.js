@@ -13,35 +13,6 @@ function ClientForm (props) {
    const [socketId, setSocketId] =  useState('');
    const [qr, setQr] =  useState('');
 
-   const processServerCode = (action, callback)=> {
-      engine.loadingOn();
-      engine.DatabaseApi('admin', {
-         action: (action === 'add') ? 'addSessionRecord' : 
-            (action === 'delete') ? 'deleteSessionRecord' : '',
-         data: {
-            visitorId: SettingStore.getState().fp, 
-            token : token,
-            socketid : socketId
-         }
-      }, (result)=>{
-         engine.loadingOff();
-         if (callback) callback(result);
-      });
-   }
-   const updateServerCode = (newsocketId, callback)=> {
-      engine.loadingOn();
-      engine.DatabaseApi('admin', {
-         action: 'updateSessionRecord',
-         data: {
-         visitorId: SettingStore.getState().fp, 
-         token : token,
-         socketid : newsocketId
-         }
-      }, (result)=>{
-         engine.loadingOff();
-         if (callback) callback(result);
-      });
-   }
    const saveAuthInfo = (data)=> {
       const rec = {...data}
       rec.signInTime = new Date().getTime();
@@ -112,15 +83,9 @@ function ClientForm (props) {
       });
    }
 
-    useEffect(()=> {
-      if(socketId) {
-         updateServerCode(socketId);
-      }
-    }, [socketId])
-
    return (<Container fluid={true} className="p-3 content-body">
                <Alert variant="secondary">
-                  <Alert.Heading className="p-3">Please Scan the QR code with a authrized phone</Alert.Heading>
+                  <Alert.Heading className="p-3">Please scan the QR code to signin</Alert.Heading>
                   <Container fluid={true}>
                      {WEBSERVER_URL + '/crossFromMobile/' + token}
                      <br/>
