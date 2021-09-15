@@ -87,7 +87,7 @@ function CrossFromMobile(props) {
       }
     });
  }
-const phoneForm = (<Frame title="To confirm:" body={(
+const phoneForm = (<Frame title="Request authentication:" body={(
     <Container className="p-3">
       <Form.Group className="p-3">
       <Form.Label>Your phone number</Form.Label>
