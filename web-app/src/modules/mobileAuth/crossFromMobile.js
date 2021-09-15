@@ -1,5 +1,5 @@
 import React , { useEffect, useState } from 'react';
-import {useParams } from "react-router-dom";
+import {useParams, useHistory } from "react-router-dom";
 
 import { Container, Alert, Button, Form } from 'react-bootstrap';
 
@@ -8,6 +8,7 @@ import { InfoHeader, Engine } from '../common';
 import socketClient  from 'socket.io-client';
 
 function CrossFromMobile(props) {
+  const history = useHistory();
 
   const engine = new Engine();
   const patt = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
@@ -81,6 +82,7 @@ function CrossFromMobile(props) {
       engine.loadingOff();
       if (result.status === 'success') {
         console.log(result);
+        history.push('/SuccessInfo/phone/' + phone);
         setSuccess(true);
         // setValidPhone(patt.test(phone));
         //  createSocket();
@@ -102,7 +104,7 @@ const phoneForm = (<Frame title="Request authentication:" body={(
     </Form.Group>
     </Container>)} />);
 
-const successPhone = (<Frame title="Succeess!" body="The you authentication has been sent to {phone}. A text message is coming" />);  
+const successPhone = (<Frame title="Succeess!" body="The authentication request has been sent. A text message is coming!" />);  
   
 return (isAuth) ? warningPage : ( success) ? successPhone : phoneForm
 

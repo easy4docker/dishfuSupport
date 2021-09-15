@@ -82,7 +82,7 @@ const App = (props) => {
   const pageReady = (
       <Router className="p-0 m-0">
         <Switch>
-          <Route exact path="/SuccessInfo/:code">
+          <Route exact path="/SuccessInfo/:code/:id">
             <SuccessInfo/>
           </Route>
           <Route exact path="/CrossFromMobile/:token">
