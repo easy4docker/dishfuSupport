@@ -16,7 +16,7 @@ function ClientForm (props) {
    const patt = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
 
    let socket = null;
-   // --- will remove after server message settig --//
+
    const processServerCode = (action, callback)=> {
       engine.loadingOn();
       engine.DatabaseApi('admin', {
