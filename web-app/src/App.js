@@ -9,7 +9,7 @@ import { useMediaQuery } from 'react-responsive';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { SettingStore } from './stores/';
 import { Loading, FingerPrinter, InfoHeader } from './modules/common';
-import { SignInForm, AdminAuth, CrossFromMobile } from './modules/mobileAuth';
+import { ClientForm, AdminAuth, CrossFromMobile } from './modules/mobileAuth';
 import { Engine } from './modules/common';
 
 const App = (props) => {
@@ -80,7 +80,7 @@ const App = (props) => {
           <Route>
             {(!!isAuth) ? (<Header/>) : headNotAuth}
             <Loading/>
-            {(!isAuth) ? (<Container className="p-3"><SignInForm/></Container>) : (<Body/>)}
+            {(!isAuth) ? (<Container className="p-3"><ClientForm/></Container>) : (<Body/>)}
             <Footer/>
           </Route>
         </Switch>

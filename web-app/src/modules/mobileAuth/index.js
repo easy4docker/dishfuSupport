@@ -1,5 +1,5 @@
 import { AuthHeadItem } from './AuthHeadItem';
-import { SignInForm } from './signInForm';
+import { ClientForm } from './clientForm';
 import { AdminAuth } from './adminAuth';
 import { CrossFromMobile } from './crossFromMobile';
-export { SignInForm, AdminAuth, CrossFromMobile, AuthHeadItem }
+export { ClientForm, AdminAuth, CrossFromMobile, AuthHeadItem }
