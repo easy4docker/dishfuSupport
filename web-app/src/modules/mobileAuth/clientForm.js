@@ -22,11 +22,16 @@ function ClientForm (props) {
    const createSocket = (callback) => {
       const socket = socketClient.connect(SOCKET_URL);
       socket.on('connect', () => {
-         socket.on('afterTransfer', (fromSocket, body) =>{
-             saveAuthInfo(fromSocket, body);
-             socket.disconnect();
-          });
+         console.log('===IN==>' + socket.id)
          const socket_id = socket.id.replace('/dishFu#', '');
+
+         socket.on('afterTransfer', (fromSocket, body) =>{
+            console.log('body=token=>', socket_id)
+            console.log('body==>', fromSocket, body)
+            // saveAuthInfo(fromSocket, body);
+            // socket.disconnect();
+          });
+         
          if (callback) {
             callback(socket_id);
          }
@@ -35,9 +40,13 @@ function ClientForm (props) {
       return socket
    }
    useEffect(()=> {
-      createSocket((socketid) => {
+      const socket = createSocket((socketid) => {
          setLinkURL(WEBSERVER_URL + '/crossFromMobile/' + socketid);
       });
+      return  () => {
+         socket.disconnect();
+         console.log('cleaned up ===  disconnexted === ');
+       };
     }, [])
 
     useEffect(()=> {

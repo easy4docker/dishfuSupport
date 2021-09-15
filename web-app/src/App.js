@@ -38,12 +38,22 @@ const App = (props) => {
        }
     }, (result)=>{
        engine.loadingOff();
-       setIsAuth((result.status === 'success') ? true : false);
+       if (result.status === 'success') {
+          setIsAuth(true);
+       } else {
+          setIsAuth(false);
+          SettingStore.dispatch({
+            type : 'signOff'
+          });
+       }
        if (callback) callback();
     });
  }
 
   useEffect(() => {
+    if (isAuth) {
+      forceAuth(); 
+    }
     const handleSubscribe = SettingStore.subscribe(() => {
       if (SettingStore.getState()._watcher === 'afterInit') {
         forceAuth(()=> {
@@ -51,7 +61,9 @@ const App = (props) => {
         });
       }
       if (SettingStore.getState()._watcher === 'forceAuth') {
-        forceAuth(); 
+        if (isAuth) {
+          forceAuth(); 
+        } 
       }
       return false;
     }); 
@@ -67,11 +79,14 @@ const App = (props) => {
   // localStorage.clear(); //=====
   const pageLoading = (<InfoHeader comp={(<Spinner animation="border" size="md" className="loading-text"/>)} />);  
   const headNotAuth = (<InfoHeader comp={(<span size="lg"><b>Admin Sign in</b></span>)} />);  
+  const mobileAuth = (<InfoHeader comp={(<span size="lg"><b>Mobile Authentication</b></span>)} />);  
   const pageReady = (
       <Router className="p-0 m-0">
         <Switch>
           <Route exact path="/CrossFromMobile/:token">
-            <CrossFromMobile isAuth={isAuth}/>
+            {mobileAuth}
+              <CrossFromMobile isAuth={isAuth}/>
+            <Footer/>
           </Route>
           <Route>
             {(!!isAuth) ? (<Header/>) : headNotAuth}
