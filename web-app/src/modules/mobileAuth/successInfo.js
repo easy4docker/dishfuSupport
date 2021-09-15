@@ -8,7 +8,7 @@ function SuccessInfo(props) {
   const code = params.code;
   const info = (code === 'phone') ? {
     header : 'Success submitted!',
-    title : 'Auth with Mobile',
+    title : '',
     body : `The authentication request has been sent to ${params.id}. A text message is coming!`
   } : {
       header : 'nothing',

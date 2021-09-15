@@ -6,7 +6,7 @@ function InfoHeader(props) {
     <Container className="bg-info" fluid={true}>
       <Container>
         <Navbar expand="lg" className="p-1">
-            <Navbar.Brand href="/" ><Logo/></Navbar.Brand>
+            <Navbar.Brand href="" ><Logo/></Navbar.Brand>
             <Navbar.Brand className="menu-color">
               {props.comp}
             </Navbar.Brand>
