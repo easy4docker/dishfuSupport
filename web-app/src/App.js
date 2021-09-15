@@ -71,11 +71,8 @@ const App = (props) => {
   const pageReady = (
       <Router className="p-0 m-0">
         <Switch>
-          <Route exact path="/CrossFromMobile/:phone/:token">
-            <CrossFromMobile/>
-          </Route>
-          <Route exact path="/adminAuth/:token/:authcode">
-            <AdminAuth/>
+          <Route exact path="/CrossFromMobile/:token">
+            <CrossFromMobile isAuth={isAuth}/>
           </Route>
           <Route>
             {(!!isAuth) ? (<Header/>) : headNotAuth}

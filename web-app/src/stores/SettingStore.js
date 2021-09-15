@@ -5,7 +5,7 @@ import  FingerprintJS  from '@fingerprintjs/fingerprintjs'
 console.log('window.location.hostname-->', window.location.hostname);
 const _defaultSetting = {ready: false, loading: {}, screenModel:{}, _watcher:'',
       fp : '',
-      data : {signinForm: {}, isAuth: false, authInfo: {}},
+      data : { isAuth: false, authInfo: {}},
       config: {
         apiServer     : 'http://192.168.86.126:3001',
         webServer     : 'http://192.168.86.126:3006',

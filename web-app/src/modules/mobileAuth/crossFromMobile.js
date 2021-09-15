@@ -117,7 +117,9 @@ const warningPage = (targetSocket) && (<Frame title="To confirm:"
   const successPage = (<Frame title="Succeess!" body="The mobile authentication completed! You can use this equipment for desktop admin application." />);  
   const stopContinuePage = (<Frame title="Stop!" body="No worry. The mobile authentication is not going through!" />);
   
-  return  ((!isAuth) ? unAuthentication : (!isContinue) ? stopContinuePage : (success) ? successPage : warningPage)
+  return 'test'  
+  
+  // ((!isAuth) ? unAuthentication : (!isContinue) ? stopContinuePage : (success) ? successPage : warningPage)
   ;
 }
 export { CrossFromMobile };
