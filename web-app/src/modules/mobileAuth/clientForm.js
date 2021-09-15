@@ -12,10 +12,6 @@ function ClientForm (props) {
    const [token, setToken] = useState('');
    const [socketId, setSocketId] =  useState('');
    const [qr, setQr] =  useState('');
-  
-   const patt = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
-
-   let socket = null;
 
    const processServerCode = (action, callback)=> {
       engine.loadingOn();
@@ -69,7 +65,9 @@ function ClientForm (props) {
          } else {
             engine.updateSigninForm(token, socket_id, '');
          }
-         
+         if (callback) {
+            callback(socket_id);
+         }
       });
       socket.on('disconnect', () => {
          /*
@@ -91,10 +89,10 @@ function ClientForm (props) {
          if (SettingStore.getState()._watcher === 'auth') {
             loadValue();
          }
-         if (SettingStore.getState()._watcher === 'auth') {
-          }
-         return false;
-      }); 
+      });
+      createSocket((socketid) => {
+         createQR(socketid);
+      });
      return ()=> {
          handleSubscribe();
      }
@@ -113,20 +111,6 @@ function ClientForm (props) {
           (err, str)=>{setQr(str)
       });
    }
-    useEffect(()=> {
-      if(token) {
-         createSocket();
-         if (token === socketId) {
-            console.log('add once===============>');
-            processServerCode('add', ()=>{
-               console.log('after add ===============>', token);
-               createQR(token);
-            });
-         } else {
-            createQR(token);
-         }
-      }
-    }, [token])
 
     useEffect(()=> {
       if(socketId) {
