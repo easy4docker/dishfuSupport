@@ -15,7 +15,7 @@ function CrossFromMobile(props) {
   const SOCKET_URL = SettingStore.getState().config.sockerServer;
   
   const [isAuth, setIsAuth] = useState(props.isAuth);
-  const [phone, setPhone] = useState('5108467570');
+  const [phone, setPhone] = useState('5108467571');
   const [errorMessage, setErrorMessage ] = useState('');
   // const [validPhone, setValidPhone] = useState(false);
 
