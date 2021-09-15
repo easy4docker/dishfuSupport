@@ -16,7 +16,7 @@ function CrossFromMobile(props) {
   
   const [isAuth, setIsAuth] = useState(props.isAuth);
   const [phone, setPhone] = useState('5108467571');
-  const [success, setSuccess ] = useState(false);
+  const [errorMessage, setErrorMessage ] = useState('');
   // const [validPhone, setValidPhone] = useState(false);
 
   const [isContinue, setIsContinue ] = useState(true);
@@ -31,7 +31,6 @@ function CrossFromMobile(props) {
      
       socket.emit("transfer", params.token, socket_id, 'SettingStore.getState().data.authInfo' + new Date().getTime());
       socket.disconnect();
-      setSuccess(true);
     });
   }
   useEffect(() => {
@@ -39,7 +38,7 @@ function CrossFromMobile(props) {
   }, []);
 
   const Frame = (info) => (<Container fluid={true} className="m-0 p-0">
-  <InfoHeader comp={'Auth with Mobile'}/>
+  <InfoHeader comp={''}/>
   <Container>
     <Alert variant={!info.variant ? 'light mt-3' :  info.variant}>
     <Alert.Heading>{info.title}</Alert.Heading>
@@ -72,6 +71,7 @@ function CrossFromMobile(props) {
 
  const submitPhone = ()=> {
     engine.loadingOn();
+    setErrorMessage('');
     engine.DatabaseApi('admin', {
       action: 'checkPhone',
       data: {
@@ -81,11 +81,9 @@ function CrossFromMobile(props) {
     }, (result)=>{
       engine.loadingOff();
       if (result.status === 'success') {
-        console.log(result);
         history.push('/SuccessInfo/phone/' + phone);
-        setSuccess(true);
-        // setValidPhone(patt.test(phone));
-        //  createSocket();
+      } else {
+        setErrorMessage(result.message);
       }
     });
  }
@@ -102,11 +100,12 @@ const phoneForm = (<Frame title="Request authentication:" body={(
             Submit
           </Button>)}
     </Form.Group>
+    <Form.Text className="text-danger text-center"><h3>{errorMessage}</h3></Form.Text>
     </Container>)} />);
 
 const successPhone = (<Frame title="Succeess!" body="The authentication request has been sent. A text message is coming!" />);  
   
-return (isAuth) ? warningPage : ( success) ? successPhone : phoneForm
+return (isAuth) ? warningPage : phoneForm
 
 /*
 
