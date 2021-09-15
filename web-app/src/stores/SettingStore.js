@@ -10,7 +10,8 @@ const _defaultSetting = {ready: false, loading: {}, screenModel:{}, _watcher:'',
         apiServer     : 'http://192.168.86.126:3001',
         webServer     : 'http://192.168.86.126:3006',
         sockerServer  : 'http://192.168.86.126:3001/dishFu',
-        ipfsServer    :  "//gateway.ipfs.io/ipfs/"
+        ipfsServer    :  "//gateway.ipfs.io/ipfs/",
+        routeService  :  "https://dishFu.com/_service_/"
       }
   };
 

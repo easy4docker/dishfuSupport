@@ -52,6 +52,26 @@ function SignInForm (props) {
    }
    // --- will remove after server message settig --//
 
+   const tryServerCode = ()=> {
+      const me = this;
+      const dt = {
+         code: new Date().getTime(),
+         url : 'http://192.168.86.126:3006/'
+      }
+      fetch(SettingStore.getState().config.routeService + 'push/new/rec', {
+          method: 'POST',
+          body: JSON.stringify(dt),
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+          }
+      }).then(v=>v.json()).then((data)=> {
+          console.log(data);
+      }).catch((err) => {
+         console.log(err);
+      });
+   }
+
    const processServerCode = (action, callback)=> {
       engine.loadingOn();
       engine.DatabaseApi('admin', {
@@ -221,10 +241,15 @@ function SignInForm (props) {
          <Button className="btn btn-warning m-1 mr-3" onClick={cleanToken}>
             <FontAwesomeIcon size="1x" icon={faMobileAlt} className="mr-2" />Reset
          </Button>
+
+
+
       </Alert>)
 
    return (<Container fluid={true} className="p-3 content-body">
-      
+               <Button className="btn btn-danger m-1 mr-3" onClick={tryServerCode}>
+            <FontAwesomeIcon size="1x" icon={faMobileAlt} className="mr-2" />TEST
+         </Button>
       <Form className="p-3">
          {(!validPhone) && phoneForm}
          {(validPhone) && QRSection}
