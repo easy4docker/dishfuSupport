@@ -28,7 +28,14 @@ const App = (props) => {
   };
 
   const forceAuth = (callback)=> {
+    
     const info = SettingStore.getState().data.authInfo;
+    
+     if (!info.authcode) {
+        setIsAuth(false);
+        if (callback) callback();
+        return true;
+      }
     engine.loadingOn();
     engine.DatabaseApi('admin', {
        action: 'checkTokenAuthCode',
@@ -61,9 +68,7 @@ const App = (props) => {
         });
       }
       if (SettingStore.getState()._watcher === 'forceAuth') {
-        if (isAuth) {
-          forceAuth(); 
-        } 
+        forceAuth();
       }
       return false;
     }); 
@@ -83,10 +88,10 @@ const App = (props) => {
       <Router className="p-0 m-0">
         <Switch>
           <Route exact path="/SuccessInfo/:code/:id">
-            <SuccessInfo/>
+            <SuccessInfo isAuth={isAuth}/>
           </Route>
           <Route exact path="/LinkFromMobile/:recid/:token">
-            <LinkFromMobile/>
+            <LinkFromMobile isAuth={isAuth}/>
           </Route>
           <Route exact path="/CrossFromMobile/:token">
             <CrossFromMobile isAuth={isAuth}/>

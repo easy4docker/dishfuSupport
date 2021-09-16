@@ -1,38 +1,18 @@
 import React , { useEffect, useState } from 'react';
 import {useParams, useHistory } from "react-router-dom";
 
-import { Container, Alert, Button, Form } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserCheck, faUserTimes } from '@fortawesome/free-solid-svg-icons';
-
+import { Container, Alert, Form, Button } from 'react-bootstrap';
 import { SettingStore } from '../../stores';
 import { InfoHeader, Engine } from '../common';
-import socketClient  from 'socket.io-client';
 
 function LinkFromMobile(props) {
   const history = useHistory();
 
   const engine = new Engine();
-  const SOCKET_URL = SettingStore.getState().config.sockerServer;
-  
-  const [isAuth, setIsAuth] = useState('');
-  const [authInfo, setAuthInfo] = useState('')
-  const [phone, setPhone] = useState('');
-  const [errorMessage, setErrorMessage ] = useState('');
-
-  const [isContinue, setIsContinue ] = useState(true);
+  const [isContinue, setIsContinue] = useState(null);
+  const [errorMessage, setErrorMessage] = useState('');
   const params = useParams();
   
-  const permit = ()=> {
-    console.log('======permit==A==>' + params.token)
-    const socket = socketClient.connect(SOCKET_URL);
-    socket.on('connect', () => {
-      const socket_id = socket.id.replace('/dishFu#', '');
-      console.log('====== socket.id==A==>' +  socket_id)
-      socket.emit("transfer", params.token, socket_id, 'SettingStore.getState().data.authInfo' + new Date().getTime());
-      socket.disconnect();
-    });
-  }
   const pullAuthInfo = ()=> {
     engine.loadingOn();
     engine.DatabaseApi('admin', {
@@ -42,72 +22,66 @@ function LinkFromMobile(props) {
           token : params.token
        }
     }, (result)=>{
-       engine.loadingOff();
-       /*
-       SettingStore.dispatch({
-        type: 'saveAuthInfo',
-        authInfo: result.data[0]
-      });
-      */
+     engine.loadingOff();
      if (result.status === 'failure') {
         setErrorMessage(result.message);
      }  else {
-        setAuthInfo(result);
+       if (!result.data || !result.data.length) {
+          history.push('/SuccessInfo/linkMobile/failure');
+       } else {
+          SettingStore.dispatch({
+            type: 'saveAuthInfo',
+            authInfo: result.data[0]
+          });
+          history.push('/SuccessInfo/linkMobile/success');
+       }
      }
-      // if (callback) callback(result);
     });
   }
+  const continueDo = ()=> {
+    setIsContinue(true);
+  } 
+  const notDo = ()=> {
+    setIsContinue(false);
+    history.push('/SuccessInfo/linkMobile/keepExist');
+  } 
   useEffect(() => {
-    pullAuthInfo();
-    console.log('---', params);
-    // permit();
+    setIsContinue(props.isAuth ? false: true);
   }, []);
+
+  useEffect(() => {
+    if (isContinue) {
+      pullAuthInfo();
+    }
+  }, [isContinue]);
 
   const Frame = (info) => (<Container fluid={true} className="m-0 p-0">
   <InfoHeader comp={''}/>
   <Container>
-    <Alert variant={!info.variant ? 'light mt-3' :  info.variant}>
+    <Alert variant={!info.variant ? 'light mt-3' :  info.variant} className="text-primary">
     <Alert.Heading>{info.title}</Alert.Heading>
       {info.body}
     </Alert>
   </Container>
   </Container>)
 
+const confirmPage= (<Frame title="" body={(<Container fluid={true}>
+  <Form.Text className="text-primary h3 p-2 text-center">The equipment was authrized already. Would you like to continue?</Form.Text>
+  <Button className="btn btn-warning mt-3 mb-2" onClick={continueDo}
+          style={{width:"100%"}}>
+            Continue anyway
+  </Button>
+  <Button className="btn btn-primary mt-3" onClick={notDo}
+          style={{width:"100%"}}>
+            No, keep exist one.
+  </Button>
+
+</Container>)} />);
+
   const errorPage = (<Frame title="" body={(<Container fluid={true}>
     <Form.Text className="text-danger h4 p-2"><b>Data Error ! </b><br/>{errorMessage}</Form.Text>
-  </Container>
-  )} />);
+  </Container>)} />);
 
-
-const phoneForm = (<Frame title="" body={(
-    <Container className="p-3 mt-3 text-center">
-      {(authInfo.authCode || true) && 
-      (<FontAwesomeIcon size="9x" icon={faUserCheck} className="text-success" /> )
-      }
-      <br/>
-
-      <Form.Text className="text-success h4 p-2"><b>The equipment was authrized</b></Form.Text>
-      <hr/>
-
-      {(authInfo.authCode || false) && 
-      (<FontAwesomeIcon size="9x" icon={faUserTimes} className="text-danger" /> )
-      }
-
-      <br/>
-
-      <Form.Text className="text-danger h4 p-2"><b>Invalid or Expired Authentication Link</b></Form.Text>
-      
-      <hr/>
-
-      {JSON.stringify(params)}
-      <Form.Group className="p-2">
-    
-      {JSON.stringify(authInfo)}
-      </Form.Group>
-    </Container>)} />);
-
-  const successPhone = (<Frame title="Succeess!" body="The authentication request has been sent. A text message is coming!" />);  
-  
-  return (errorMessage) ? errorPage : phoneForm
+  return  (errorMessage) ? errorPage : (!isContinue) ? confirmPage : '' 
 }
 export { LinkFromMobile };
