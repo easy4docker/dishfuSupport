@@ -2,6 +2,8 @@ import React , { useEffect, useState } from 'react';
 import {useParams, useHistory } from "react-router-dom";
 
 import { Container, Alert, Button, Form } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserCheck, faUserTimes } from '@fortawesome/free-solid-svg-icons';
 
 import { SettingStore } from '../../stores';
 import { InfoHeader, Engine } from '../common';
@@ -11,10 +13,10 @@ function LinkFromMobile(props) {
   const history = useHistory();
 
   const engine = new Engine();
-  const patt = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
   const SOCKET_URL = SettingStore.getState().config.sockerServer;
   
   const [isAuth, setIsAuth] = useState('');
+  const [authInfo, setAuthInfo] = useState('')
   const [phone, setPhone] = useState('');
   const [errorMessage, setErrorMessage ] = useState('');
 
@@ -32,7 +34,22 @@ function LinkFromMobile(props) {
       socket.disconnect();
     });
   }
+  const pullAuthInfo = ()=> {
+    engine.loadingOn();
+    engine.DatabaseApi('admin', {
+       action: 'getAdminSessionRecord',
+       data: {
+          recid: params.recid, 
+          token : params.token
+       }
+    }, (result)=>{
+       engine.loadingOff();
+       setAuthInfo(result);
+      // if (callback) callback(result);
+    });
+  }
   useEffect(() => {
+    pullAuthInfo();
     console.log('---', params);
     // permit();
   }, []);
@@ -59,10 +76,29 @@ function LinkFromMobile(props) {
 
 
 const phoneForm = (<Frame title="Request authentication:" body={(
-    <Container className="p-3">
+    <Container className="p-3 text-center">
+      {(authInfo.authCode || true) && 
+      (<FontAwesomeIcon size="9x" icon={faUserCheck} className="text-success" /> )
+      }
+      <br/>
+
+      <Form.Text className="text-success h4 p-2"><b>The equipment was authrized</b></Form.Text>
+      <hr/>
+
+      {(authInfo.authCode || true) && 
+      (<FontAwesomeIcon size="9x" icon={faUserTimes} className="text-danger" /> )
+      }
+
+      <br/>
+
+      <Form.Text className="text-danger h4 p-2"><b>Invalid or Expired Authentication Link</b></Form.Text>
+      
+      <hr/>
+
       {JSON.stringify(params)}
       <Form.Group className="p-2">
-      {JSON.stringify(params)}
+    
+      {JSON.stringify(authInfo)}
       </Form.Group>
     </Container>)} />);
 
