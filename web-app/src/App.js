@@ -81,7 +81,6 @@ const App = (props) => {
       handleSubscribe();
   }
   }, []);
-  // localStorage.clear(); //=====
   const pageLoading = (<InfoHeader comp={(<Spinner animation="border" size="md" className="loading-text"/>)} />);  
   const headNotAuth = (<InfoHeader comp={(<span size="lg"><b>Admin Sign in</b></span>)} />);  
   const pageReady = (
@@ -98,11 +97,11 @@ const App = (props) => {
           </Route>
           <Route>
             {(!!isAuth) ? (<Header/>) : headNotAuth}
-            <Loading/>
             {(!isAuth) ? (<Container className="p-3"><ClientForm/></Container>) : (<Body/>)}
             <Footer/>
           </Route>
         </Switch>
+        <Loading/>
       </Router>)
 
     return (!loadReady) ? pageLoading : pageReady;

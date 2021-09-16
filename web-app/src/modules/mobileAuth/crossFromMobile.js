@@ -36,7 +36,6 @@ function CrossFromMobile(props) {
     setIsConfirmed(true);
   }
   useEffect(() => {
-    console.log('---', params);
     // permit();
   }, []);
 
