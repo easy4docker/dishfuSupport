@@ -9,7 +9,7 @@ import { useMediaQuery } from 'react-responsive';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { SettingStore } from './stores/';
 import { Loading, FingerPrinter, InfoHeader } from './modules/common';
-import { ClientForm, SuccessInfo, CrossFromMobile } from './modules/mobileAuth';
+import { ClientForm, SuccessInfo, CrossFromMobile , LinkFromMobile } from './modules/mobileAuth';
 import { Engine } from './modules/common';
 
 const App = (props) => {
@@ -84,6 +84,9 @@ const App = (props) => {
         <Switch>
           <Route exact path="/SuccessInfo/:code/:id">
             <SuccessInfo/>
+          </Route>
+          <Route exact path="/LinkFromMobile/:recid/:token">
+            <LinkFromMobile/>
           </Route>
           <Route exact path="/CrossFromMobile/:token">
             <CrossFromMobile isAuth={isAuth}/>

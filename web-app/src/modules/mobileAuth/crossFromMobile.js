@@ -15,9 +15,8 @@ function CrossFromMobile(props) {
   const SOCKET_URL = SettingStore.getState().config.sockerServer;
   
   const [isAuth, setIsAuth] = useState(props.isAuth);
-  const [phone, setPhone] = useState('5108467571');
+  const [phone, setPhone] = useState('');
   const [errorMessage, setErrorMessage ] = useState('');
-  // const [validPhone, setValidPhone] = useState(false);
 
   const [isContinue, setIsContinue ] = useState(true);
   const params = useParams();
@@ -34,6 +33,7 @@ function CrossFromMobile(props) {
     });
   }
   useEffect(() => {
+    console.log('---', params);
     // permit();
   }, []);
 
@@ -75,6 +75,7 @@ function CrossFromMobile(props) {
     engine.DatabaseApi('admin', {
       action: 'checkPhone',
       data: {
+        token: params.token,
         visitorId: SettingStore.getState().fp, 
         phone : phone.replace(patt, '$1$2$3')
       }
@@ -89,9 +90,9 @@ function CrossFromMobile(props) {
  }
 const phoneForm = (<Frame title="Request authentication:" body={(
     <Container className="p-3">
-      <Form.Group className="p-3">
+      <Form.Group className="p-2">
       <Form.Label>Your phone number</Form.Label>
-      <Form.Control defaultValue={phone} placeholder="(xxx)xxx-xxxx" type="text" style={{fontSize:'2rem'}}
+      <Form.Control defaultValue={phone} placeholder="(xxx)xxx-xxxx" type="text" style={{fontSize:'1.8rem'}}
         onChange={onPhoneChanged} />
     </Form.Group>
     <Form.Group className="p-3">
