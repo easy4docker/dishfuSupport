@@ -10,28 +10,19 @@ function ClientForm (props) {
    const [linkURL, setLinkURL] =  useState('');
    const [qr, setQr] =  useState('');
 
-   const saveAuthInfo = (fromSocket, data)=> {
-      const rec = {...data}
-      rec.signInTime = new Date().getTime();
-      console.log('afterTransfer,  rec->', rec, fromSocket);
-      SettingStore.dispatch({
-         type: 'saveAuthInfo',
-         authInfo: rec
-      });
-  }
    const createSocket = (callback) => {
       const socket = socketClient.connect(SOCKET_URL);
       socket.on('connect', () => {
-         console.log('===IN==>' + socket.id)
          const socket_id = socket.id.replace('/dishFu#', '');
-
          socket.on('afterTransfer', (fromSocket, body) =>{
-            console.log('body=token=>', socket_id)
-            console.log('body==>', fromSocket, body)
-            // saveAuthInfo(fromSocket, body);
-            // socket.disconnect();
+            if (body.action === 'sendAuthInfo') {
+               SettingStore.dispatch({
+                  type: 'saveAuthInfo',
+                  authInfo: body.data
+               });
+               socket.disconnect();
+            }
           });
-         
          if (callback) {
             callback(socket_id);
          }

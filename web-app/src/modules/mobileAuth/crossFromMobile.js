@@ -18,19 +18,22 @@ function CrossFromMobile(props) {
   const [phone, setPhone] = useState('');
   const [errorMessage, setErrorMessage ] = useState('');
 
-  const [isContinue, setIsContinue ] = useState(true);
+  const [isConfirmed, setIsConfirmed ] = useState(false);
+  const [isStopped, setIsStopped ] = useState(false);
+
   const params = useParams();
   
   const permit = ()=> {
-    console.log('======permit==A==>' + params.token)
     const socket = socketClient.connect(SOCKET_URL);
     socket.on('connect', () => {
       const socket_id = socket.id.replace('/dishFu#', '');
-      console.log('====== socket.id==A==>' +  socket_id)
-     
-      socket.emit("transfer", params.token, socket_id, 'SettingStore.getState().data.authInfo' + new Date().getTime());
+      socket.emit("transfer", params.token, socket_id, 
+        { action: 'sendAuthInfo',
+          data : SettingStore.getState().data.authInfo
+        });
       socket.disconnect();
     });
+    setIsConfirmed(true);
   }
   useEffect(() => {
     console.log('---', params);
@@ -47,12 +50,18 @@ function CrossFromMobile(props) {
   </Container>
   </Container>)
 
-  const warningPage = (<Frame title="To confirm:" body={(<Container fluid={true}>
-    <Button onClick={permit} className="m-2">
-        Authorize the desktop
+  const warningPage = (<Frame title="QR Code captualed!" body={(<Container fluid={true}>
+    <Form.Text className="center text-secondary h5 p-3 mt-3">
+        Click the Yes button to authorize the desktop application from this phone.
+    </Form.Text>
+    <Button onClick={permit} style={{width:"100%"}} className="btn btton-warning">
+        Yes, continue
     </Button>
-    <Button onClick={ ()=> { setIsContinue(false)} } variant="danger" className="m-2">
-        Stop
+    <Form.Text className="center text-secondary h5 p-3 mt-3">
+        If it is not your expectd process. please click stop button to skip that authentication process
+    </Form.Text>
+    <Button onClick={ ()=> { setIsStopped(true)} } style={{width:"100%"}} variant="danger" className="m-2">
+        Stop the authentication
     </Button> 
   </Container>
   )} />);
@@ -104,9 +113,11 @@ const phoneForm = (<Frame title="Request authentication:" body={(
     <Form.Text className="text-danger text-center"><h3>{errorMessage}</h3></Form.Text>
     </Container>)} />);
 
-const successPhone = (<Frame title="Succeess!" body="The authentication request has been sent. A text message is coming!" />);  
+const authConfirmed = (<Frame title="Succeess!" body="The authentication has been issued to the target desktop application." />);  
   
-return (isAuth) ? warningPage : phoneForm
+const stoppedPage = (<Frame title="Stopped!" body="No worry. The mobile authentication did not go through!" />);
+  
+return (isConfirmed) ? authConfirmed : (isStopped) ? stoppedPage : (isAuth) ? warningPage : phoneForm
 
 /*
 
