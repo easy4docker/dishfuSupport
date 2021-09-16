@@ -66,12 +66,12 @@ function LinkFromMobile(props) {
   </Container>)
 
 const confirmPage= (<Frame title="" body={(<Container fluid={true}>
-  <Form.Text className="text-primary h3 p-2 text-center">The equipment was authrized already. Would you like to continue?</Form.Text>
+  <Form.Text className="text-secondary h4 p-2 text-center mb-3 mt-3">The equipment has been authrized. Would you like to continue?</Form.Text>
   <Button className="btn btn-warning mt-3 mb-2" onClick={continueDo}
           style={{width:"100%"}}>
             Continue anyway
   </Button>
-  <Button className="btn btn-primary mt-3" onClick={notDo}
+  <Button className="btn btn-info mt-3" onClick={notDo}
           style={{width:"100%"}}>
             No, keep exist one.
   </Button>
