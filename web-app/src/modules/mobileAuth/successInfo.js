@@ -53,6 +53,22 @@ function SuccessInfo(props) {
           body : (props.isAuth) ? authedPage:  nonAuthedPage
         };
         break;
+    case 'crossFromMobile':
+          const crossFromSection = (<Container fluid={true} className="p-3">
+          <Form.Text className="text-info h4 p-3">
+              {(params.id === 'success') ? 'Succeess!' : (params.id === 'stop') ? 'Stopped!': ''}
+          </Form.Text>
+          <Form.Text className="text-info h4 p-3">
+              {(params.id === 'success') ? 'The authentication has been issued to the target desktop application.' : 
+               (params.id === 'stop') ? 'No worry. The mobile authentication did not go through!' : ''}
+          </Form.Text>
+        </Container>)
+          info = {
+            header : '',
+            title : '',
+            body : crossFromSection
+          };
+          break;
     default:
       info = {
         header : 'nothing',
