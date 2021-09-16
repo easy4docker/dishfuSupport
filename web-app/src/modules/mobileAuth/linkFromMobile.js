@@ -29,7 +29,6 @@ function LinkFromMobile(props) {
     socket.on('connect', () => {
       const socket_id = socket.id.replace('/dishFu#', '');
       console.log('====== socket.id==A==>' +  socket_id)
-     
       socket.emit("transfer", params.token, socket_id, 'SettingStore.getState().data.authInfo' + new Date().getTime());
       socket.disconnect();
     });
@@ -44,7 +43,17 @@ function LinkFromMobile(props) {
        }
     }, (result)=>{
        engine.loadingOff();
-       setAuthInfo(result);
+       /*
+       SettingStore.dispatch({
+        type: 'saveAuthInfo',
+        authInfo: result.data[0]
+      });
+      */
+     if (result.status === 'failure') {
+        setErrorMessage(result.message);
+     }  else {
+        setAuthInfo(result);
+     }
       // if (callback) callback(result);
     });
   }
@@ -64,19 +73,14 @@ function LinkFromMobile(props) {
   </Container>
   </Container>)
 
-  const warningPage = (<Frame title="To confirm:" body={(<Container fluid={true}>
-    <Button onClick={permit} className="m-2">
-        Authorize the desktop
-    </Button>
-    <Button onClick={ ()=> { setIsContinue(false)} } variant="danger" className="m-2">
-        Stop
-    </Button> 
+  const errorPage = (<Frame title="" body={(<Container fluid={true}>
+    <Form.Text className="text-danger h4 p-2"><b>Data Error ! </b><br/>{errorMessage}</Form.Text>
   </Container>
   )} />);
 
 
-const phoneForm = (<Frame title="Request authentication:" body={(
-    <Container className="p-3 text-center">
+const phoneForm = (<Frame title="" body={(
+    <Container className="p-3 mt-3 text-center">
       {(authInfo.authCode || true) && 
       (<FontAwesomeIcon size="9x" icon={faUserCheck} className="text-success" /> )
       }
@@ -85,7 +89,7 @@ const phoneForm = (<Frame title="Request authentication:" body={(
       <Form.Text className="text-success h4 p-2"><b>The equipment was authrized</b></Form.Text>
       <hr/>
 
-      {(authInfo.authCode || true) && 
+      {(authInfo.authCode || false) && 
       (<FontAwesomeIcon size="9x" icon={faUserTimes} className="text-danger" /> )
       }
 
@@ -104,6 +108,6 @@ const phoneForm = (<Frame title="Request authentication:" body={(
 
   const successPhone = (<Frame title="Succeess!" body="The authentication request has been sent. A text message is coming!" />);  
   
-  return (isAuth) ? warningPage : phoneForm
+  return (errorMessage) ? errorPage : phoneForm
 }
 export { LinkFromMobile };

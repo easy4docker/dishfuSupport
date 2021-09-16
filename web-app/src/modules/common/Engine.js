@@ -53,7 +53,7 @@ class Engine {
         }).then(v=>v.json()).then((data)=> {
             callback(data);
         }).catch((err) => {
-            callback(err);
+            callback({status:'failure', message: err.message});
         });
      }
 
