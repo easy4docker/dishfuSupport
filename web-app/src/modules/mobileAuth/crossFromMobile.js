@@ -17,7 +17,7 @@ function CrossFromMobile(props) {
   const [isAuth, setIsAuth] = useState(props.isAuth);
   const [phone, setPhone] = useState('');
   const [errorMessage, setErrorMessage ] = useState('');
-  
+
   const params = useParams();
   
   const confirmedAuth = ()=> {
@@ -26,6 +26,13 @@ function CrossFromMobile(props) {
   const stopAuth = ()=> {
     history.push('/SuccessInfo/crossFromMobile/stop');
   } 
+
+  const removeAuth = () =>{
+    SettingStore.dispatch({
+      type: 'signOff',
+    });
+    history.push('/SuccessInfo/linkMobile/' + new  Date().getTime())
+  };
 
   const permit = ()=> {
     const socket = socketClient.connect(SOCKET_URL);
@@ -55,18 +62,27 @@ function CrossFromMobile(props) {
   </Container>)
 
   const warningPage = (<Frame title="QR Code captualed!" body={(<Container fluid={true}>
-    <Form.Text className="center text-secondary h5 p-3 mt-3">
+    <Form.Text className="center text-secondary h5 p-0">
         Click the Yes button to authorize the desktop application from this phone.
     </Form.Text>
     <Button onClick={permit} style={{width:"100%"}} className="btn btton-warning">
         Yes, continue
     </Button>
-    <Form.Text className="center text-secondary h5 p-3 mt-3">
+    <Form.Text className="center text-secondary h5 p-1">
         If it is not your expectd process. please click stop button to skip that authentication process
     </Form.Text>
     <Button onClick={ stopAuth } style={{width:"100%"}} variant="danger" className="m-2">
         Stop the authentication
     </Button> 
+
+    <Form.Text className="center text-secondary h5 p-1">
+        It is wrong. please click Remove button to remove that authentication from the phone.
+    </Form.Text>
+
+    <Button onClick={ removeAuth } style={{width:"100%"}} variant="warning" className="m-2">
+      Remove the authentication
+    </Button>
+
   </Container>
   )} />);
 
