@@ -11,7 +11,7 @@ import { SettingStore } from './stores/';
 import { Loading, FingerPrinter, InfoHeader } from './modules/common';
 import { ClientForm, SuccessInfo, CrossFromMobile , LinkFromMobile } from './modules/mobileAuth';
 import { Engine } from './modules/common';
-
+import { ThreeStamps} from './modules/mobileComps'
 const App = (props) => {
   const engine = new Engine();
 
@@ -86,6 +86,9 @@ const App = (props) => {
   const pageReady = (
       <Router className="p-0 m-0">
         <Switch>
+          <Route exact path="/3Stamps/:code">
+            <ThreeStamps isAuth={isAuth}/>
+          </Route>
           <Route exact path="/SuccessInfo/:code/:id">
             <SuccessInfo isAuth={isAuth}/>
           </Route>

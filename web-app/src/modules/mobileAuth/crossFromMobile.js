@@ -61,7 +61,7 @@ function CrossFromMobile(props) {
   </Container>
   </Container>)
 
-  const warningPage = (<Frame title="QR Code captualed!" body={(<Container fluid={true}>
+  const warningPage = (<Frame title="QR Code captured" body={(<Container fluid={true}>
     <Form.Text className="center text-secondary h5 p-0">
         Click the Yes button to authorize the desktop application from this phone.
     </Form.Text>
