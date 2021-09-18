@@ -57,7 +57,7 @@ function ClientForm (props) {
       );
    }
    return (<Alert variant="secondary">
-               <Alert.Heading className="p-3">Please scan the QR code to signin</Alert.Heading>
+               <Alert.Heading className="p-3">Please scan the QR code to signin -- </Alert.Heading>
                <Container fluid={true}>
                   {linkURL}
                   <br/>
