@@ -13,6 +13,8 @@ function ClientForm (props) {
    const createSocket = (callback) => {
       const socket = socketClient.connect(SOCKET_URL);
       socket.on('connect', () => {
+
+         console.log('===socket-connected===' + socket.id);
          const socket_id = socket.id.replace('/dishFu#', '');
          socket.on('afterTransfer', (fromSocket, body) =>{
             if (body.action === 'sendAuthInfo') {
