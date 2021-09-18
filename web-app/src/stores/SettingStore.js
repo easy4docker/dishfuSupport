@@ -15,7 +15,7 @@ const _defaultSetting = {ready: false, loading: {}, screenModel:{}, _watcher:'',
         routeService  :  "https://dishFu.com/_service_/"
       } : {
         apiServer     : '/api',
-        webServer     : '/',
+        webServer     : '',
         sockerServer  : '/dishFu',
         ipfsServer    :  "//gateway.ipfs.io/ipfs/",
         routeService  :  "https://dishFu.com/_service_/"
