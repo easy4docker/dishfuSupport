@@ -5,18 +5,19 @@ import  FingerprintJS  from '@fingerprintjs/fingerprintjs'
 const getConfig = ()=> {
     const ipPatt = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/;
     const host  = window.location.hostname;
+    const protocol = window.location.protocol
     return (host === 'localhost' || ipPatt.test(host)) ? {
-      apiServer     : '//' + host + ':3001/api',
-      webServer     : '//' + host + ':3006',
-      sockerServer  : '//' + host + ':3001/dishFu',
-      ipfsServer    :  "//gateway.ipfs.io/ipfs/",
-      routeService  :  "https://dishFu.com/_service_/"
+      apiServer     : protocol + '//' + host + ':3001/api',
+      webServer     : protocol + '//' + host + ':3006',
+      sockerServer  : protocol + '//' + host + ':3001/dishFu',
+      ipfsServer    : protocol + '//gateway.ipfs.io/ipfs/',
+      routeService  : 'https://dishFu.com/_service_/'
     } :  {
-      apiServer     : '//' + host + '/api',
-      webServer     : '//' + host + '',
-      sockerServer  : '//' + host + '/dishFu',
-      ipfsServer    :  "//gateway.ipfs.io/ipfs/",
-      routeService  :  "https://dishFu.com/_service_/"
+      apiServer     : protocol + '//' + host + '/api',
+      webServer     : protocol + '//' + host + '',
+      sockerServer  : protocol + '//' + host + '/dishFu',
+      ipfsServer    : protocol +  '//gateway.ipfs.io/ipfs/',
+      routeService  : 'https://dishFu.com/_service_/'
     }
 }
 console.log('window.location.hostname-->', window.location.hostname);
