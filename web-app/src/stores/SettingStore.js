@@ -20,7 +20,6 @@ const getConfig = ()=> {
       routeService  : 'https://dishFu.com/_service_/'
     }
 }
-console.log('window.location.hostname-->', window.location.hostname);
 
 const _defaultSetting = {ready: false, loading: {}, screenModel:{}, _watcher:'',
       fp : '',

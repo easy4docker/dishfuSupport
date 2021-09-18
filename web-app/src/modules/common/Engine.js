@@ -43,7 +43,7 @@ class Engine {
 
      DatabaseApi = (apiCode, dt, callback)=>{
         const me = this;
-        fetch(me.server + '/api/' + apiCode, {
+        fetch(me.server + '/' + apiCode, {
             method: 'POST',
             body: JSON.stringify(dt),
             headers: {
