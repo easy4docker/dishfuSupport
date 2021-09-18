@@ -12,6 +12,7 @@ function ClientForm (props) {
 
    const createSocket = (callback) => {
       const socket = socketClient.connect(SOCKET_URL);
+      console.log('===SOCKET_URL===' + SOCKET_URL);
       socket.on('connect', () => {
 
          console.log('===socket-connected===' + socket.id);
