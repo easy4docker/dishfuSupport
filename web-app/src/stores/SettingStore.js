@@ -3,13 +3,20 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import  FingerprintJS  from '@fingerprintjs/fingerprintjs'
 
 console.log('window.location.hostname-->', window.location.hostname);
+
 const _defaultSetting = {ready: false, loading: {}, screenModel:{}, _watcher:'',
       fp : '',
       data : { isAuth: false, authInfo: {}},
-      config: {
+      config: (window.location.hostname === 'localhost' || window.location.hostname === '192.168.86.126') ? {
         apiServer     : 'http://192.168.86.126:3001',
         webServer     : 'http://192.168.86.126:3006',
         sockerServer  : 'http://192.168.86.126:3001/dishFu',
+        ipfsServer    :  "//gateway.ipfs.io/ipfs/",
+        routeService  :  "https://dishFu.com/_service_/"
+      } : {
+        apiServer     : '/api',
+        webServer     : '/',
+        sockerServer  : '/dishFu',
         ipfsServer    :  "//gateway.ipfs.io/ipfs/",
         routeService  :  "https://dishFu.com/_service_/"
       }
