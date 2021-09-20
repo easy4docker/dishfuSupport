@@ -9,7 +9,7 @@ function UserItem(props) {
   const engine = new Engine();
   const [list, setList] = useState([]);
   const params = useParams();
-  const uid = params.id;
+  const id = params.id;
 
   const getAuthUsers = ()=> {
     engine.loadingOn();
@@ -30,16 +30,11 @@ function UserItem(props) {
 
   const showList = () =>  (
     <Container className="mb-3 p-3">
-        <Link to="/authUsers">UserItem {uid}</Link>
+        <Link to="/authUsers">UserItem {id}</Link>
         <Container>
           <Row>
-            <Col>1 of 2</Col>
-            <Col>2 of 2</Col>
-          </Row>
-          <Row>
-            <Col>1 of 3</Col>
-            <Col>2 of 3</Col>
-            <Col>3 of 3</Col>
+            <Col xs={6}>1 of 2</Col>
+            <Col xs={6}>2 of 2</Col>
           </Row>
         </Container>
         <Table striped bordered hover>
@@ -57,7 +52,7 @@ function UserItem(props) {
             {list.map((v, k)=> {
             return (
               <tr key={k}>
-                <td><Link to={'/authUsers/'+v.id}>{v.address}</Link></td>
+                <td><Link to={'/authUsers/'+id}>{v.address}</Link></td>
                 <td>{v.roles}</td>
                 <td>{v.specialFoodie}</td>
                 <td>{v.status}</td>
