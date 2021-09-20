@@ -1,5 +1,7 @@
 import React , { useState, useEffect } from 'react';
 import { Container, Table } from 'react-bootstrap';
+import { Link, useLocation  } from "react-router-dom";
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons';
 import { AddressInput, Engine } from '../common';
@@ -27,12 +29,11 @@ function UsersList(props) {
   }, []);
 
   const showList = () =>  (
-    <Container fluid={true} className="mb-3 p-3">
+    <Container className="mb-3 p-3">
         Users List
         <Table striped bordered hover>
             <thead>
               <tr>
-                <th>#</th>
                 <th>Address</th>
                 <th>Roles</th>
                 <th>Mark</th>
@@ -45,8 +46,7 @@ function UsersList(props) {
             {list.map((v, k)=> {
             return (
               <tr key={k}>
-                <td>{v.id}</td>
-                <td>{v.address}</td>
+                <td><Link to={'/authUsers/'+v.id}>{v.address}</Link></td>
                 <td>{v.roles}</td>
                 <td>{v.specialFoodie}</td>
                 <td>{v.status}</td>
