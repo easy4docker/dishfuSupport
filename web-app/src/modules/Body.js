@@ -3,7 +3,7 @@ import { Switch, Route } from "react-router-dom";
 import { Container } from 'react-bootstrap';
 
 import { Home } from "./content";
-import { ApplicationsList, UsersList } from "./authUsersAdmin";
+import { UsersList, UserItem } from "./authUsersAdmin";
 import { TransDocument } from "./transReport";
 
 function Body(props) {
@@ -19,8 +19,8 @@ function Body(props) {
           <Route  exact path="/authUsers">
             <UsersList/>
           </Route>
-          <Route  exact path="/authUsers/:uid">
-            <UsersList/>
+          <Route  exact path="/authUsers/:id">
+            <UserItem/>
           </Route>
           <Route  exact path="/transReport">
             <TransDocument/>

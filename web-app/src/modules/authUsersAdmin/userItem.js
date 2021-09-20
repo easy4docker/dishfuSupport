@@ -1,0 +1,81 @@
+import React , { useState, useEffect } from 'react';
+import { Container, Table, Row, Col } from 'react-bootstrap';
+import { Link, useParams } from "react-router-dom";
+
+import {Engine } from '../common';
+
+
+function UserItem(props) {
+  const engine = new Engine();
+  const [list, setList] = useState([]);
+  const params = useParams();
+  const uid = params.id;
+
+  const getAuthUsers = ()=> {
+    engine.loadingOn();
+    engine.DatabaseApi('usersAdmin', {
+      action: 'getAuthUsers',
+      data: {
+
+      }
+    }, (result)=>{
+      engine.loadingOff();
+      setList(result.data);
+    });
+  }
+
+  useEffect(()=> {
+    getAuthUsers();
+  }, []);
+
+  const showList = () =>  (
+    <Container className="mb-3 p-3">
+        <Link to="/authUsers">UserItem {uid}</Link>
+        <Container>
+          <Row>
+            <Col>1 of 2</Col>
+            <Col>2 of 2</Col>
+          </Row>
+          <Row>
+            <Col>1 of 3</Col>
+            <Col>2 of 3</Col>
+            <Col>3 of 3</Col>
+          </Row>
+        </Container>
+        <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>Address</th>
+                <th>Roles</th>
+                <th>Mark</th>
+                <th>Status</th>
+                <th>Created</th>
+
+              </tr>
+            </thead>
+            <tbody>
+            {list.map((v, k)=> {
+            return (
+              <tr key={k}>
+                <td><Link to={'/authUsers/'+v.id}>{v.address}</Link></td>
+                <td>{v.roles}</td>
+                <td>{v.specialFoodie}</td>
+                <td>{v.status}</td>
+                <td>{new Date(v.created).toLocaleString('en-US')}</td>
+              </tr>
+            )})}
+            </tbody>
+          </Table>
+    </Container>);
+
+  const errorBox = () => {
+    const title = (<span className="text-success">You application submitted! </span>)
+    const message = (<span className="text-success">
+    You might become a supie automatically upon our AI valification. or you will be contacted sooner. </span>)
+    return (<alert message={message} title={title} className="mt-3"/>)
+  }
+
+   return showList();
+}
+
+export { UserItem }
