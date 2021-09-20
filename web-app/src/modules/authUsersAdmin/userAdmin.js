@@ -5,7 +5,7 @@ import { Link, useParams } from "react-router-dom";
 import {Engine } from '../common';
 
 
-function AuthUsers (props) {
+function UserAdmin (props) {
   const engine = new Engine();
   const [list, setList] = useState([]);
   const params = useParams();
@@ -38,7 +38,6 @@ function AuthUsers (props) {
             </Col>
             <Col xs={6}>
             <Table striped bordered hover>
-             <User/>
             </Table>
             </Col>
           </Row>
@@ -55,4 +54,4 @@ function AuthUsers (props) {
    return showList();
 }
 
-export { UsersList }
+export { UserAdmin }
