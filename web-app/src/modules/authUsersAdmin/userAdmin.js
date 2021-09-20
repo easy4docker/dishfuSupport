@@ -13,7 +13,7 @@ function UserAdmin(props) {
   const getAuthUserById = ()=> {
     engine.loadingOn();
     engine.DatabaseApi('usersAdmin', {
-      action: 'getAuthUsers',
+      action: 'getAuthUserById',
       data: (id)? {
         id : id
       } : {}
@@ -29,7 +29,7 @@ function UserAdmin(props) {
 
   const showList = () =>  (
     <Container className="mb-3 p-3">
-       {JSON.stringify(rec)}
+       {JSON.stringify(rec)}=={id}
     </Container>);
 
   const errorBox = () => {
