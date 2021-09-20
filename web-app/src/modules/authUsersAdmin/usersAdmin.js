@@ -3,9 +3,9 @@ import { Container, Table, Row, Col } from 'react-bootstrap';
 import { Link, useParams } from "react-router-dom";
 
 import {Engine } from '../common';
+import { UserAdmin } from './userAdmin';
 
-
-function UserItem(props) {
+function UsersAdmin(props) {
   const engine = new Engine();
   const [list, setList] = useState([]);
   const params = useParams();
@@ -25,7 +25,7 @@ function UserItem(props) {
   }
 
   useEffect(()=> {
-    getAuthUserById();
+   // getAuthUserById();
   }, []);
 
   const showList = () =>  (
@@ -37,30 +37,7 @@ function UserItem(props) {
             {list.map((v, k)=> (<Link to={'/authUsers/'+id}>{v.address}</Link>))}
             </Col>
             <Col xs={6}>
-            <Table striped bordered hover>
-              <thead>
-                <tr>
-                  <th>Address</th>
-                  <th>Roles</th>
-                  <th>Mark</th>
-                  <th>Status</th>
-                  <th>Created</th>
-
-                </tr>
-              </thead>
-              <tbody>
-              {list.map((v, k)=> {
-              return (
-                <tr key={k}>
-                  <td><Link to={'/authUsers/'+id}>{v.address}</Link></td>
-                  <td>{v.roles}</td>
-                  <td>{v.specialFoodie}</td>
-                  <td>{v.status}</td>
-                  <td>{new Date(v.created).toLocaleString('en-US')}</td>
-                </tr>
-              )})}
-              </tbody>
-            </Table>
+              <UserAdmin/>
             </Col>
           </Row>
         </Container>
@@ -76,4 +53,4 @@ function UserItem(props) {
    return showList();
 }
 
-export { UserItem }
+export {UsersAdmin }

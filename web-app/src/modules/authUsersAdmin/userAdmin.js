@@ -5,7 +5,7 @@ import { Link, useParams } from "react-router-dom";
 import {Engine } from '../common';
 
 
-function UsersList (props) {
+function AuthUsers (props) {
   const engine = new Engine();
   const [list, setList] = useState([]);
   const params = useParams();
@@ -34,32 +34,11 @@ function UsersList (props) {
         <Container>
           <Row>
             <Col xs={6}>
-            {list.map((v, k)=> (<Container className="p-1"><Link to={'/authUsers/'+id}>{v.address}</Link></Container>))}
+            {list.map((v, k)=> (<Container className="p-1"><Link to={'/authUser/'+v.id}>{v.address} -- {v.id}</Link></Container>))}
             </Col>
             <Col xs={6}>
             <Table striped bordered hover>
-              <thead>
-                <tr>
-                  <th>Address</th>
-                  <th>Roles</th>
-                  <th>Mark</th>
-                  <th>Status</th>
-                  <th>Created</th>
-
-                </tr>
-              </thead>
-              <tbody>
-              {list.map((v, k)=> {
-              return (
-                <tr key={k}>
-                  <td><Link to={'/authUsers/'+id}>{v.address}</Link></td>
-                  <td>{v.roles}</td>
-                  <td>{v.specialFoodie}</td>
-                  <td>{v.status}</td>
-                  <td>{new Date(v.created).toLocaleString('en-US')}</td>
-                </tr>
-              )})}
-              </tbody>
+             <User/>
             </Table>
             </Col>
           </Row>

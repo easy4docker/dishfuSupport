@@ -1,3 +1,3 @@
-import { UsersList } from './usersList';
-import { UserItem } from './userItem';
-export {  UsersList, UserItem }
+import { UsersAdmin } from './usersAdmin';
+import { UserAdmin} from './userAdmin';
+export {  UsersAdmin, UserAdmin }

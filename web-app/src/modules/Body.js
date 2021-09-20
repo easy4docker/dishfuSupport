@@ -17,10 +17,10 @@ function Body(props) {
             <Home/>
           </Route>
           <Route  exact path="/authUsers">
-            <UsersList/>
+            <Users>
           </Route>
           <Route  exact path="/authUsers/:id">
-            <UserItem/>
+            <User/>
           </Route>
           <Route  exact path="/transReport">
             <TransDocument/>
