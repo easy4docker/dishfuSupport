@@ -30,25 +30,7 @@ function ApplicationsList(props) {
       setSuccess(true);
     });
   }
-  const onQualificationChanged = (e)=> {
-    setQualification(e.target.value);
-  }
-  const onDescriptionChanged = (e)=> {
-    setDescription(e.target.value);
-  }
 
-  const isSubmit = () => {
-    return (!phone || !address || !qualification) ? false : true;
-  }
-  const onPhoneChanged = (e)=> {
-    const patt = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
-    if (patt.test(e.target.value)) {
-      e.target.value = e.target.value.replace(patt, '($1)$2-$3');
-      setPhone(e.target.value.replace(patt, '($1)$2-$3'));
-    } else {
-      setPhone('');
-    }
-  }
   useEffect(()=> {}, []);
 
   const successForm = () =>  (
