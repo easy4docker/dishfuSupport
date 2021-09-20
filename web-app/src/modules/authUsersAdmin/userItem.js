@@ -33,34 +33,37 @@ function UserItem(props) {
         <Link to="/authUsers">UserItem {id}</Link>
         <Container>
           <Row>
-            <Col xs={6}>1 of 2</Col>
-            <Col xs={6}>2 of 2</Col>
+            <Col xs={6}>
+            {list.map((v, k)=> (<Link to={'/authUsers/'+id}>{v.address}</Link>))}
+            </Col>
+            <Col xs={6}>
+            <Table striped bordered hover>
+              <thead>
+                <tr>
+                  <th>Address</th>
+                  <th>Roles</th>
+                  <th>Mark</th>
+                  <th>Status</th>
+                  <th>Created</th>
+
+                </tr>
+              </thead>
+              <tbody>
+              {list.map((v, k)=> {
+              return (
+                <tr key={k}>
+                  <td><Link to={'/authUsers/'+id}>{v.address}</Link></td>
+                  <td>{v.roles}</td>
+                  <td>{v.specialFoodie}</td>
+                  <td>{v.status}</td>
+                  <td>{new Date(v.created).toLocaleString('en-US')}</td>
+                </tr>
+              )})}
+              </tbody>
+            </Table>
+            </Col>
           </Row>
         </Container>
-        <Table striped bordered hover>
-            <thead>
-              <tr>
-                <th>Address</th>
-                <th>Roles</th>
-                <th>Mark</th>
-                <th>Status</th>
-                <th>Created</th>
-
-              </tr>
-            </thead>
-            <tbody>
-            {list.map((v, k)=> {
-            return (
-              <tr key={k}>
-                <td><Link to={'/authUsers/'+id}>{v.address}</Link></td>
-                <td>{v.roles}</td>
-                <td>{v.specialFoodie}</td>
-                <td>{v.status}</td>
-                <td>{new Date(v.created).toLocaleString('en-US')}</td>
-              </tr>
-            )})}
-            </tbody>
-          </Table>
     </Container>);
 
   const errorBox = () => {

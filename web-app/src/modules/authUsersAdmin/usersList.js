@@ -1,12 +1,15 @@
 import React , { useState, useEffect } from 'react';
-import { Container, Table } from 'react-bootstrap';
-import { Link, useLocation  } from "react-router-dom";
+import { Container, Table, Row, Col } from 'react-bootstrap';
+import { Link, useParams } from "react-router-dom";
+
 import {Engine } from '../common';
 
 
-function UsersList(props) {
+function UsersList (props) {
   const engine = new Engine();
   const [list, setList] = useState([]);
+  const params = useParams();
+  const id = params.id;
 
   const getAuthUsers = ()=> {
     engine.loadingOn();
@@ -27,31 +30,40 @@ function UsersList(props) {
 
   const showList = () =>  (
     <Container className="mb-3 p-3">
-        <Link to="/authUsers">Users List</Link>
-        <Table striped bordered hover>
-            <thead>
-              <tr>
-                <th>Address</th>
-                <th>Roles</th>
-                <th>Mark</th>
-                <th>Status</th>
-                <th>Created</th>
+        <Link to="/authUsers">UserItem {id}</Link>
+        <Container>
+          <Row>
+            <Col xs={6}>
+            {list.map((v, k)=> (<Container className="p-1"><Link to={'/authUsers/'+id}>{v.address}</Link></Container>))}
+            </Col>
+            <Col xs={6}>
+            <Table striped bordered hover>
+              <thead>
+                <tr>
+                  <th>Address</th>
+                  <th>Roles</th>
+                  <th>Mark</th>
+                  <th>Status</th>
+                  <th>Created</th>
 
-              </tr>
-            </thead>
-            <tbody>
-            {list.map((v, k)=> {
-            return (
-              <tr key={k}>
-                <td><Link to={'/authUsers/'+v.id}>{v.address}</Link></td>
-                <td>{v.roles}</td>
-                <td>{v.specialFoodie}</td>
-                <td>{v.status}</td>
-                <td>{new Date(v.created).toLocaleString('en-US')}</td>
-              </tr>
-            )})}
-            </tbody>
-          </Table>
+                </tr>
+              </thead>
+              <tbody>
+              {list.map((v, k)=> {
+              return (
+                <tr key={k}>
+                  <td><Link to={'/authUsers/'+id}>{v.address}</Link></td>
+                  <td>{v.roles}</td>
+                  <td>{v.specialFoodie}</td>
+                  <td>{v.status}</td>
+                  <td>{new Date(v.created).toLocaleString('en-US')}</td>
+                </tr>
+              )})}
+              </tbody>
+            </Table>
+            </Col>
+          </Row>
+        </Container>
     </Container>);
 
   const errorBox = () => {
