@@ -29,19 +29,7 @@ function UserAdmin(props) {
 
   const showList = () =>  (
     <Container className="mb-3 p-3">
-        <Link to="/authUsers">UserItem {id}</Link>
-        <Container>
-          <Row>
-            <Col xs={6}>
-            {list.map((v, k)=> (<Container key={k} className="p-1">
-              <Link to={'/authUser/'+v.id}>{v.address} -- {v.id}</Link>
-            </Container>))}
-            </Col>
-            <Col xs={6}>
-              {/*<UserAdmin/>*/}
-            </Col>
-          </Row>
-        </Container>
+      aaa
     </Container>);
 
   const errorBox = () => {

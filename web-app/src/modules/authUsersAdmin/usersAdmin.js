@@ -39,7 +39,7 @@ function UsersAdmin(props) {
             </Container>))}
             </Col>
             <Col xs={6}>
-              {/*<UserAdmin/>*/}
+              <UserAdmin/>
             </Col>
           </Row>
         </Container>
