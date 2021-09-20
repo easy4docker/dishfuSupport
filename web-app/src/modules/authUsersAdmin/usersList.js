@@ -1,11 +1,8 @@
 import React , { useState, useEffect } from 'react';
 import { Container, Table } from 'react-bootstrap';
 import { Link, useLocation  } from "react-router-dom";
+import {Engine } from '../common';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons';
-import { AddressInput, Engine } from '../common';
-import { SettingStore } from '../../stores';
 
 function UsersList(props) {
   const engine = new Engine();
@@ -30,7 +27,7 @@ function UsersList(props) {
 
   const showList = () =>  (
     <Container className="mb-3 p-3">
-        Users List
+        <Link to="/authUsers">Users List</Link>
         <Table striped bordered hover>
             <thead>
               <tr>
@@ -63,12 +60,6 @@ function UsersList(props) {
     You might become a supie automatically upon our AI valification. or you will be contacted sooner. </span>)
     return (<alert message={message} title={title} className="mt-3"/>)
   }
-
-  const inputForm = ()=> (
-   <Container className="mb-3 p-3">
-     Users List
-     {list.map((v, k)=> (<Container>v.address</Container>))}
-   </Container>);
 
    return showList();
 }
