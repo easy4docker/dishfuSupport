@@ -17,7 +17,7 @@ function Body(props) {
             <Home/>
           </Route>
           <Route  exact path="/authUsers">
-            <ApplicationsList/>
+            <UsersList/>
           </Route>
           <Route  exact path="/authUsers/:uid">
             <UsersList/>
