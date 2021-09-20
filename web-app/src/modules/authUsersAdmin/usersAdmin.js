@@ -34,7 +34,9 @@ function UsersAdmin(props) {
         <Container>
           <Row>
             <Col xs={6}>
-            {list.map((v, k)=> (<Link key={k} to={'/authUsers/'+id}>{v.address}</Link>))}
+            {list.map((v, k)=> (<Container key={k} className="p-1">
+              <Link to={'/authUser/'+v.id}>{v.address} -- {v.id}</Link>
+            </Container>))}
             </Col>
             <Col xs={6}>
               {/*<UserAdmin/>*/}
