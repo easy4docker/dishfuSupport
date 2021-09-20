@@ -7,38 +7,43 @@ import { SettingStore } from '../../stores';
 
 function UsersList(props) {
   const engine = new Engine();
-  const [address, setAddress] = useState('');
-  const [qualification, setQualification] = useState('');
-  const [description, setDescription] = useState('');
-  const [phone, setPhone] = useState('');
-  const [success, setSuccess] = useState(false);
+  const [list, setList] = useState(false);
 
+  const getAuthUsers = ()=> {
+    engine.loadingOn();
+    engine.DatabaseApi('usersAdmin', {
+      action: 'getAuthUsers',
+      data: {
 
-  useEffect(()=> {}, []);
+      }
+    }, (result)=>{
+      engine.loadingOff();
+      setList(result);
+    });
+  }
 
-  const successForm = () =>  (
+  useEffect(()=> {
+    getAuthUsers();
+  }, []);
+
+  const showList = () =>  (
     <Container>
-    <Alert variant="success mt-3">
-      <Alert.Heading>You application submitted!</Alert.Heading>
-        <span>
-          You might become a supie automatically upon our AI valification. or you will be contacted sooner. 
-        </span>
-      </Alert>
+      {JSON.stringify(list)}
     </Container>);
-/*
+
   const errorBox = () => {
     const title = (<span className="text-success">You application submitted! </span>)
     const message = (<span className="text-success">
     You might become a supie automatically upon our AI valification. or you will be contacted sooner. </span>)
     return (<alert message={message} title={title} className="mt-3"/>)
   }
-*/
+
   const inputForm = ()=> (
    <Container className="mb-3 p-3">
      Users List
    </Container>);
 
-   return (!success) ? inputForm() : successForm()
+   return showList();
 }
 
 export { UsersList }
