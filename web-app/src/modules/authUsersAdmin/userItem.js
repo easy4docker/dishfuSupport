@@ -11,12 +11,12 @@ function UserItem(props) {
   const params = useParams();
   const id = params.id;
 
-  const getAuthUsers = ()=> {
+  const getAuthUserById = ()=> {
     engine.loadingOn();
     engine.DatabaseApi('usersAdmin', {
-      action: 'getAuthUsers',
+      action: 'getAuthUserById',
       data: {
-
+        id : id
       }
     }, (result)=>{
       engine.loadingOff();
@@ -25,7 +25,7 @@ function UserItem(props) {
   }
 
   useEffect(()=> {
-    getAuthUsers();
+    getAuthUserById();
   }, []);
 
   const showList = () =>  (
