@@ -1,5 +1,5 @@
 import React , { useState, useEffect } from 'react';
-import { Container, Form, Button, Alert } from 'react-bootstrap';
+import { Container, Table } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons';
 import { AddressInput, Engine } from '../common';
@@ -7,7 +7,7 @@ import { SettingStore } from '../../stores';
 
 function UsersList(props) {
   const engine = new Engine();
-  const [list, setList] = useState(false);
+  const [list, setList] = useState([]);
 
   const getAuthUsers = ()=> {
     engine.loadingOn();
@@ -18,7 +18,7 @@ function UsersList(props) {
       }
     }, (result)=>{
       engine.loadingOff();
-      setList(result);
+      setList(result.data);
     });
   }
 
@@ -27,8 +27,34 @@ function UsersList(props) {
   }, []);
 
   const showList = () =>  (
-    <Container>
-      {JSON.stringify(list)}
+    <Container fluid={true} className="mb-3 p-3">
+        Users List
+        <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Address</th>
+                <th>Roles</th>
+                <th>Mark</th>
+                <th>Status</th>
+                <th>Created</th>
+
+              </tr>
+            </thead>
+            <tbody>
+            {list.map((v, k)=> {
+            return (
+              <tr key={k}>
+                <td>{v.id}</td>
+                <td>{v.address}</td>
+                <td>{v.roles}</td>
+                <td>{v.specialFoodie}</td>
+                <td>{v.status}</td>
+                <td>{new Date(v.created).toLocaleString('en-US')}</td>
+              </tr>
+            )})}
+            </tbody>
+          </Table>
     </Container>);
 
   const errorBox = () => {
@@ -41,6 +67,7 @@ function UsersList(props) {
   const inputForm = ()=> (
    <Container className="mb-3 p-3">
      Users List
+     {list.map((v, k)=> (<Container>v.address</Container>))}
    </Container>);
 
    return showList();
