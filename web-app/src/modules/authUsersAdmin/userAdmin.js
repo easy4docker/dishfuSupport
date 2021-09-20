@@ -4,20 +4,19 @@ import { Link, useParams } from "react-router-dom";
 
 import {Engine } from '../common';
 
-
-function UserAdmin (props) {
+function UserAdmin(props) {
   const engine = new Engine();
   const [list, setList] = useState([]);
   const params = useParams();
   const id = params.id;
 
-  const getAuthUsers = ()=> {
+  const getAuthUserById = ()=> {
     engine.loadingOn();
     engine.DatabaseApi('usersAdmin', {
       action: 'getAuthUsers',
-      data: {
-
-      }
+      data: (id)? {
+        id : id
+      } : {}
     }, (result)=>{
       engine.loadingOff();
       setList(result.data);
@@ -25,7 +24,7 @@ function UserAdmin (props) {
   }
 
   useEffect(()=> {
-    getAuthUsers();
+    getAuthUserById();
   }, []);
 
   const showList = () =>  (
@@ -34,11 +33,12 @@ function UserAdmin (props) {
         <Container>
           <Row>
             <Col xs={6}>
-            {list.map((v, k)=> (<Container className="p-1"><Link to={'/authUser/'+v.id}>{v.address} -- {v.id}</Link></Container>))}
+            {list.map((v, k)=> (<Container key={k} className="p-1">
+              <Link to={'/authUser/'+v.id}>{v.address} -- {v.id}</Link>
+            </Container>))}
             </Col>
             <Col xs={6}>
-            <Table striped bordered hover>
-            </Table>
+              {/*<UserAdmin/>*/}
             </Col>
           </Row>
         </Container>
@@ -54,4 +54,4 @@ function UserAdmin (props) {
    return showList();
 }
 
-export { UserAdmin }
+export {UserAdmin }
