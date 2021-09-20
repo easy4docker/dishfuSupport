@@ -14,10 +14,10 @@ function UsersAdmin(props) {
   const getAuthUserById = ()=> {
     engine.loadingOn();
     engine.DatabaseApi('usersAdmin', {
-      action: 'getAuthUserById',
-      data: {
+      action: 'getAuthUsers',
+      data: (id)? {
         id : id
-      }
+      } : {}
     }, (result)=>{
       engine.loadingOff();
       setList(result.data);
@@ -25,7 +25,7 @@ function UsersAdmin(props) {
   }
 
   useEffect(()=> {
-   // getAuthUserById();
+    getAuthUserById();
   }, []);
 
   const showList = () =>  (
@@ -34,10 +34,10 @@ function UsersAdmin(props) {
         <Container>
           <Row>
             <Col xs={6}>
-            {list.map((v, k)=> (<Link to={'/authUsers/'+id}>{v.address}</Link>))}
+            {list.map((v, k)=> (<Link key={k} to={'/authUsers/'+id}>{v.address}</Link>))}
             </Col>
             <Col xs={6}>
-              <UserAdmin/>
+              {/*<UserAdmin/>*/}
             </Col>
           </Row>
         </Container>

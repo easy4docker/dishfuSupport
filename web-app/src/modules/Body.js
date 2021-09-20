@@ -21,7 +21,7 @@ function Body(props) {
           </Route>
           <Route  exact path="/authUsers/:id">
             <UserAdmin/>
-          </Route>
+           s</Route>
           <Route  exact path="/transReport">
             <TransDocument/>
           </Route>
