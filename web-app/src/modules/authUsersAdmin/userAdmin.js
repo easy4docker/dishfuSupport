@@ -6,7 +6,7 @@ import {Engine } from '../common';
 
 function UserAdmin(props) {
   const engine = new Engine();
-  const [list, setList] = useState([]);
+  const [rec, setRec] = useState([]);
   const params = useParams();
   const id = params.id;
 
@@ -19,7 +19,7 @@ function UserAdmin(props) {
       } : {}
     }, (result)=>{
       engine.loadingOff();
-      setList(result.data);
+      setRec(result.data);
     });
   }
 
@@ -29,7 +29,7 @@ function UserAdmin(props) {
 
   const showList = () =>  (
     <Container className="mb-3 p-3">
-      aaa
+       {JSON.stringify(rec)}
     </Container>);
 
   const errorBox = () => {
