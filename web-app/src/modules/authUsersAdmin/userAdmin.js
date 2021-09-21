@@ -4,7 +4,7 @@ function UserAdmin(props) {
   const [rec, setRec] = useState(props.rec)
   const showRec = () =>  (
     <Container className="mb-3 p-3">
-      <iframe src="http://localhost:3001/_service_/sendPDF"
+      <iframe src="http://192.168.86.126:3001/_adminService_/authedUser"
       width="100%" height="400"
       ></iframe>
        {JSON.stringify(props.rec)} == {props.id}
