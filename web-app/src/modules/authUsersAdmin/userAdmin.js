@@ -1,36 +1,20 @@
-import React , { useState, useEffect } from 'react';
+import React, { useState, useEffect  } from 'react';
 import { Container, Table, Row, Col } from 'react-bootstrap';
-import { Link, useParams } from "react-router-dom";
-
-import {Engine } from '../common';
-
 function UserAdmin(props) {
-  const engine = new Engine();
-  const [rec, setRec] = useState([]);
-  const params = useParams();
-  const id = params.id;
-
-  const getAuthUserById = ()=> {
-    engine.loadingOn();
-    engine.DatabaseApi('usersAdmin', {
-      action: 'getAuthUserById',
-      data: (id)? {
-        id : id
-      } : {}
-    }, (result)=>{
-      engine.loadingOff();
-      setRec(result.data);
-    });
-  }
-
-  useEffect(()=> {
-    getAuthUserById();
-  }, []);
-
-  const showList = () =>  (
+  const [rec, setRec] = useState(props.rec)
+  const showRec = () =>  (
     <Container className="mb-3 p-3">
-       {JSON.stringify(rec)}=={id}
-    </Container>);
+      <iframe src="http://localhost:3001/_service_/sendPDF"
+      width="100%" height="400"
+      ></iframe>
+       {JSON.stringify(props.rec)} == {props.id}
+       <hr/>
+       Address: {props.rec.address}
+       <br/>
+       roles: {props.rec.roles}
+       <br/>
+       authCode: {props.rec.authCode}
+    </Container>)
 
   const errorBox = () => {
     const title = (<span className="text-success">You application submitted! </span>)
@@ -39,7 +23,7 @@ function UserAdmin(props) {
     return (<alert message={message} title={title} className="mt-3"/>)
   }
 
-   return showList();
+   return showRec();
 }
 
 export {UserAdmin }

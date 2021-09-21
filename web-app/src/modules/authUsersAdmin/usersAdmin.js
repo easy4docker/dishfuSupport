@@ -8,25 +8,39 @@ import { UserAdmin } from './userAdmin';
 function UsersAdmin(props) {
   const engine = new Engine();
   const [list, setList] = useState([]);
+  const [rec, setRec] = useState({});
   const params = useParams();
   const id = params.id;
 
-  const getAuthUserById = ()=> {
+  const getAuthUsers = ()=> {
     engine.loadingOn();
     engine.DatabaseApi('usersAdmin', {
       action: 'getAuthUsers',
-      data: (id)? {
-        id : id
-      } : {}
     }, (result)=>{
       engine.loadingOff();
       setList(result.data);
     });
   }
 
+  const getAuthUserById = ()=> {
+    console.log('---getAuthUserById---getAuthUserById--->', params);
+    engine.loadingOn();
+    engine.DatabaseApi('usersAdmin', {
+      action: 'getAuthUserById',
+      data : {
+        id : params.id
+      }
+    }, (result)=>{
+      engine.loadingOff();
+      console.log(result);
+      setRec(result.data[0]);
+    });
+  }
+
   useEffect(()=> {
+    getAuthUsers();
     getAuthUserById();
-  }, []);
+  }, [id]);
 
   const showList = () =>  (
     <Container className="mb-3 p-3">
@@ -39,7 +53,7 @@ function UsersAdmin(props) {
             </Container>))}
             </Col>
             <Col xs={6}>
-              <UserAdmin/>
+              {(<UserAdmin rec={rec} id={id}/>)}
             </Col>
           </Row>
         </Container>
