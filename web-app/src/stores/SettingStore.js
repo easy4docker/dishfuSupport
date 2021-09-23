@@ -3,7 +3,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import  FingerprintJS  from '@fingerprintjs/fingerprintjs'
 import { faWindowRestore } from '@fortawesome/free-solid-svg-icons';
 
-const isLocalIp = (apiServer) => {
+const localToIp = (apiServer) => { // it helps local mobile debugging
   fetch(apiServer + '/getMainIp', {}).then((v)=> {
     return v.json()
   }).then((jsonData, err)=>{
@@ -31,7 +31,7 @@ const getConfig = ()=> {
       routeService  : 'https://dishFu.com/_service_/'
     }
     if (host === 'localhost' || host === '127.0.0.1') {
-      isLocalIp(servers.apiServer);
+      localToIp(servers.apiServer);
     }
     return servers;
 }
