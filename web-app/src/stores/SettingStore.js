@@ -30,7 +30,7 @@ const getConfig = ()=> {
       ipfsServer    : protocol +  '//gateway.ipfs.io/ipfs/',
       routeService  : 'https://dishFu.com/_service_/'
     }
-    if (host === 'localhost') {
+    if (host === 'localhost' || host === '127.0.0.1') {
       isLocalIp(servers.apiServer);
     }
     return servers;
