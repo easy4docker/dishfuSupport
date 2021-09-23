@@ -1,9 +1,16 @@
 import { createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import  FingerprintJS  from '@fingerprintjs/fingerprintjs'
+import { faWindowRestore } from '@fortawesome/free-solid-svg-icons';
 
-const isLocalIp = (ip) => {
-  // fetch()
+const isLocalIp = (apiServer) => {
+  fetch(apiServer + '/getMainIp', {}).then((v)=> {
+    return v.json()
+  }).then((jsonData, err)=>{
+    console.log(jsonData);
+    window.location = window.location.protocol + '//' + jsonData.data + ':3006';
+  }).catch((error)=> {
+    });
 }
 const getConfig = ()=> {
     const ipPatt = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/;
@@ -22,6 +29,9 @@ const getConfig = ()=> {
       sockerServer  : protocol + '//' + host + '/dishFu',
       ipfsServer    : protocol +  '//gateway.ipfs.io/ipfs/',
       routeService  : 'https://dishFu.com/_service_/'
+    }
+    if (host === 'localhost') {
+      isLocalIp(servers.apiServer);
     }
     return servers;
 }
