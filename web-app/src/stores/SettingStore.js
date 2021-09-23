@@ -2,11 +2,15 @@ import { createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import  FingerprintJS  from '@fingerprintjs/fingerprintjs'
 
+const isLocalIp = (ip) => {
+  // fetch()
+}
 const getConfig = ()=> {
     const ipPatt = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/;
     const host  = window.location.hostname;
     const protocol = window.location.protocol
-    return (host === 'localhost' || ipPatt.test(host)) ? {
+
+    const servers = (host === 'localhost' || ipPatt.test(host)) ? {
       apiServer     : protocol + '//' + host + ':3001/api',
       webServer     : protocol + '//' + host + ':3006',
       sockerServer  : protocol + '//' + host + ':3001/dishFu',
@@ -19,6 +23,7 @@ const getConfig = ()=> {
       ipfsServer    : protocol +  '//gateway.ipfs.io/ipfs/',
       routeService  : 'https://dishFu.com/_service_/'
     }
+    return servers;
 }
 
 const _defaultSetting = {ready: false, loading: {}, screenModel:{}, _watcher:'',

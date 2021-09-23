@@ -99,8 +99,11 @@ const App = (props) => {
             <CrossFromMobile isAuth={isAuth}/>
           </Route>
           <Route>
-            {(!!isAuth) ? (<Header/>) : headNotAuth}
-            {(!isAuth) ? (<Container className="p-3"><ClientForm/></Container>) : (<Body/>)}
+            {(!!isAuth || true) ? (<Header/>) : headNotAuth}
+            {/*
+              {(!isAuth || true) ? (<Container className="p-3"><ClientForm/></Container>) : (<Body/>)}
+            */}
+            <Container className="p-3"><ClientForm/></Container>
             <Footer/>
           </Route>
         </Switch>
