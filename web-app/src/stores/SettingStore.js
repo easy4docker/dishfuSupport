@@ -110,11 +110,7 @@ const loadSettingApi = async (callback) =>{
   })
 }
 const saveSettingApi = (data) =>{
-  setTimeout(
-    ()=>{
-      localStorage.setItem('localSettingData',  JSON.stringify(data));
-    }, 500
-  );
+  localStorage.setItem('localSettingData',  JSON.stringify(data));
 }
 
 /* <--- simulated api */

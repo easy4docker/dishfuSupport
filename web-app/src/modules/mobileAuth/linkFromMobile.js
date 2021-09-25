@@ -22,6 +22,7 @@ function LinkFromMobile(props) {
           token : params.token
        }
     }, (result)=>{
+      
      engine.loadingOff();
      if (result.status === 'failure') {
         setErrorMessage(result.message);
@@ -29,11 +30,16 @@ function LinkFromMobile(props) {
        if (!result.result || !result.result.length) {
           history.push('/SuccessInfo/linkMobile/failure');
        } else {
+        
           SettingStore.dispatch({
             type: 'saveAuthInfo',
             authInfo: result.result[0]
           });
-          history.push('/SuccessInfo/linkMobile/success');
+     
+          setTimeout(()=> {
+            history.push('/SuccessInfo/linkMobile/success');
+          }, 1000);
+          
        }
      }
     });
