@@ -35,11 +35,7 @@ function LinkFromMobile(props) {
             type: 'saveAuthInfo',
             authInfo: result.result[0]
           });
-     
-          setTimeout(()=> {
-            history.push('/SuccessInfo/linkMobile/success');
-          }, 1000);
-          
+          history.push('/SuccessInfo/linkMobile/success'); 
        }
      }
     });
