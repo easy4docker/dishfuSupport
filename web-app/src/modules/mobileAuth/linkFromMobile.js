@@ -26,7 +26,7 @@ function LinkFromMobile(props) {
      if (result.status === 'failure') {
         setErrorMessage(result.message);
      }  else {
-       if (!result.data || !result.data.length) {
+       if (!result.result || !result.result.length) {
           history.push('/SuccessInfo/linkMobile/failure');
        } else {
           SettingStore.dispatch({
