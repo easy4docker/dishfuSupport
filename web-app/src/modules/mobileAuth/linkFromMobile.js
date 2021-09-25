@@ -31,7 +31,7 @@ function LinkFromMobile(props) {
        } else {
           SettingStore.dispatch({
             type: 'saveAuthInfo',
-            authInfo: result.data[0]
+            authInfo: result.result[0]
           });
           history.push('/SuccessInfo/linkMobile/success');
        }
