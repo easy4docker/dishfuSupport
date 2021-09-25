@@ -47,13 +47,13 @@ function UsersAdmin(props) {
         <Link to="/authUsers">UserItem {id}</Link>
         <Container>
           <Row>
-            <Col xs={6}>aaaa
+            <Col xs={6}>
             {list.map((v, k)=> (<Container key={k} className="p-1">
               <Link to={'/authUser/'+v.id}>{v.address} -- {v.id}</Link>
-            </Container>))}bbb
+            </Container>))}
             </Col>
             <Col xs={6}>
-              {/*(<UserAdmin rec={rec} id={id}/>)*/}
+             {(rec) && (<UserAdmin rec={rec} id={id}/>)}
             </Col>
           </Row>
         </Container>
