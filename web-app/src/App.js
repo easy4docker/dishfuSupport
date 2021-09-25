@@ -101,7 +101,6 @@ const App = (props) => {
           <Route>
             {(!!isAuth) ? (<Header/>) : headNotAuth}
             {(!isAuth) ? (<Container className="p-3"><ClientForm/></Container>) : (<Body/>)}
-            <Container className="p-3"><ClientForm/></Container>
             <Footer/>
           </Route>
         </Switch>

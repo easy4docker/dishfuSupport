@@ -18,7 +18,7 @@ function UsersAdmin(props) {
       action: 'getAuthUsers',
     }, (result)=>{
       engine.loadingOff();
-      setList(result.data);
+      setList((!result || !result.result) ? [] : result.result);
     });
   }
 
@@ -33,7 +33,7 @@ function UsersAdmin(props) {
     }, (result)=>{
       engine.loadingOff();
       console.log(result);
-      setRec(result.data[0]);
+      setRec((!result || !result.result) ? {} : result.result[0]);
     });
   }
 
@@ -47,13 +47,13 @@ function UsersAdmin(props) {
         <Link to="/authUsers">UserItem {id}</Link>
         <Container>
           <Row>
-            <Col xs={6}>
+            <Col xs={6}>aaaa
             {list.map((v, k)=> (<Container key={k} className="p-1">
               <Link to={'/authUser/'+v.id}>{v.address} -- {v.id}</Link>
-            </Container>))}
+            </Container>))}bbb
             </Col>
             <Col xs={6}>
-              {(<UserAdmin rec={rec} id={id}/>)}
+              {/*(<UserAdmin rec={rec} id={id}/>)*/}
             </Col>
           </Row>
         </Container>
